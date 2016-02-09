@@ -24,13 +24,18 @@ void move();
 int main(int argc, char const *argv[]) {
 	newGame();
 	while(game == 0) {
-			possibleMoves(player);
-			screen();
-			scanf("%s", pos);
-			row=pos[0] - '1';
-			col=pos[2] - '1';
-			isLegal(row, col);
-			move();
+		possibleMoves(player);
+		screen();
+		scanf("%s", pos);
+		row=pos[0] - '1';
+		col=pos[2] - '1';
+		isLegal(row, col);
+		move();
+		if (player == 1) {
+			player = 2;
+		} else {
+			player = 1;
+		}
 	}
 	return 0;
 }
