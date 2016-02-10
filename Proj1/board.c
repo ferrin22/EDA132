@@ -135,6 +135,7 @@ void opposite(char direction, int player, int x, int y) {
 		if (x-1 > 0) {
 			if (board[x-1][y] == 0) {
 				printf("%d,%d\n", x, y+1);
+				board[x-1][y] = 3;
 			} else if (board[x-1][y] != 0 && board[x-1][y] != player) {
 				printf("here\n");
 				opposite(6, player, x-1, y);
@@ -145,6 +146,7 @@ void opposite(char direction, int player, int x, int y) {
 		if (x+1 > 0) {
 			if (board[x+1][y] == 0) {
 				printf("%d,%d\n", x+2, y+1);
+				board[x+1][y] = 3;
 			} else if (board[x+1][y] != 0 && board[x+1][y] != player) {
 				printf("here\n");
 				opposite(6, player, x+1, y);
@@ -155,6 +157,7 @@ void opposite(char direction, int player, int x, int y) {
 		if (y-1 > 0) {
 			if (board[x][y-1] == 0) {
 				printf("%d,%d\n", x+1, y);
+				board[x][y-1] = 3;
 			} else if (board[x][y-1] != 0 && board[x][y-1] != player) {
 				printf("here\n");
 				opposite(6, player, x, y-1);
@@ -165,6 +168,7 @@ void opposite(char direction, int player, int x, int y) {
 		if (y+1 > 0) {
 			if (board[x][y+1] == 0) {
 				printf("%d,%d\n", x+1, y+2);
+				board[x][y+1] = 3;
 			} else if (board[x][y+1] != 0 && board[x][y+1] != player) {
 				printf("here\n");
 				opposite(6, player, x, y+1);
@@ -174,17 +178,5 @@ void opposite(char direction, int player, int x, int y) {
 }
 
 
-//void checkMove(){
-//	for(int i=0; i < 8; ++i){
-//		for (int j=0; j < 8; ++j) {
-//			if (board[i][j] == 0){}
-//			if (board[i][j] == player)
-//			{
-				
-//			}
 
-
-//void add(x, y) {
-//	board[x][y] = 1;
-//	}
 
