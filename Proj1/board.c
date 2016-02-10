@@ -38,7 +38,7 @@ int main(int argc, char const *argv[])
 		if (legal == 1) {
 			player = 2;
 			checkMove();
-			minimax(player, board, turn);
+			minimax(player, board, 0, turn);
 			printf("1\n");
 			putPiece(xx, yy);
 			printf("2\n");

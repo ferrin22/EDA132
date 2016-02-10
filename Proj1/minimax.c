@@ -28,17 +28,19 @@ int yy = 0;
 				   // {0,0,0,5,0,0,0,0}};
 
 
-void minimax();
+int basecase();
 unsigned concatenate();
+void minimax();
 
 //int main(int argc, char const *argv[]) {
-//	minimax(1, board);
+//	basecase(1, board);
 //	return 0;
 //}
 
-void minimax(int player, int board[8][8], int suggest) {
+int basecase(int player, int board[8][8], int suggest) {
 	//if depth is 0, search for the current 
 	//highest ranked move
+	int coordinate = 0;
 	int bestMove = 0;
 	int bestValue = -1000000;
 	int moves = 0;
@@ -50,20 +52,12 @@ void minimax(int player, int board[8][8], int suggest) {
 				if (board[x][y] == suggest) {
 					moves = 1;
 
-					int coordinate = concatenate(x+1,y+1);
+					coordinate = concatenate(x+1,y+1);
 
-					for (int co = 0; co < 4; co++) {
-						if (corners[co] == coordinate) {
-							if (cornerWeight > bestValue) {
-								bestValue = cornerWeight;
-								bestMove = coordinate;
-							}
-						}
-					}
-					for (int si = 0; si < 16; si++) {
-						if (sides[si] == coordinate) {
-							if (sideWeight > bestValue) {
-								bestValue = sideWeight;
+					for (int ne = 0; ne < 16; ne++) {
+						if (netural[ne] == coordinate) {
+							if (neturalWeight > bestValue) {
+								bestValue = neturalWeight;
 								bestMove = coordinate;
 							}
 						}
@@ -76,10 +70,10 @@ void minimax(int player, int board[8][8], int suggest) {
 							}
 						}
 					}
-					for (int ce = 0; ce < 4; ce++) {
-						if (center[ce] == coordinate) {
-							if (centerWeight > bestValue) {
-								bestValue = centerWeight;
+					for (int si = 0; si < 16; si++) {
+						if (sides[si] == coordinate) {
+							if (sideWeight > bestValue) {
+								bestValue = sideWeight;
 								bestMove = coordinate;
 							}
 						}
@@ -92,10 +86,18 @@ void minimax(int player, int board[8][8], int suggest) {
 							}
 						}
 					}
-					for (int ne = 0; ne < 16; ne++) {
-						if (netural[ne] == coordinate) {
-							if (neturalWeight > bestValue) {
-								bestValue = neturalWeight;
+					for (int co = 0; co < 4; co++) {
+						if (corners[co] == coordinate) {
+							if (cornerWeight > bestValue) {
+								bestValue = cornerWeight;
+								bestMove = coordinate;
+							}
+						}
+					}
+					for (int ce = 0; ce < 4; ce++) {
+						if (center[ce] == coordinate) {
+							if (centerWeight > bestValue) {
+								bestValue = centerWeight;
 								bestMove = coordinate;
 							}
 						}
@@ -104,20 +106,18 @@ void minimax(int player, int board[8][8], int suggest) {
 			}
 		}
 		if (moves != 0) {
-			yy = bestMove % 10;
-			yy = yy - 1;
-			xx = bestMove / 10;
-			xx = xx - 1;
-			board[xx][yy] = player;
-			printf("\n");
-			printf("Opponent Moved To %d,%d\n", (xx + 1), (yy + 1));
+			//yy = bestMove % 10;
+			//yy = yy - 1;
+			//xx = bestMove / 10;
+			//xx = xx - 1;
+			//board[xx][yy] = player;
+			//printf("\n");
+			//printf("Opponent Moved To %d,%d\n", (xx + 1), (yy + 1));
+			return coordinate;
 		}
 	}
+	return 0;
 }
-
-
-
-
 
 unsigned concatenate(unsigned x, unsigned y) {
     unsigned pow = 10;
@@ -125,6 +125,81 @@ unsigned concatenate(unsigned x, unsigned y) {
         pow *= 10;
     return x * pow + y;        
 }
+
+
+
+
+
+
+//time limit will be like: at the beginning of this iteration,
+//if I have enough time, continue, else
+
+
+
+void minimax(int player, int board[8][8], int depth, int suggest) {
+	int nextMove = 0;
+	bestValueSoFar = -1000000
+	bestMoveSoFar = 0;
+
+
+	if (depth == 0) {
+		nextMove = basecase(player, board, suggest);
+		if (nextMove == 0) {
+			return;
+		}
+		yy = nextMove % 10;
+		yy = yy - 1;
+		xx = nextMove / 10;
+		xx = xx - 1;
+		board[xx][yy] = player;
+		printf("\n");
+		printf("Opponent Moved To %d,%d\n", (xx + 1), (yy + 1));
+	} else {
+
+		//for every possible move
+		for(int x = 0; x < 8; ++x) {
+			for (int y = 0; y < 8; ++y) {
+				if (board[x][y] == suggest) {
+					//make that move
+					board[x][y] == player;
+					//make opponents move
+
+					//compare values
+
+
+				}
+			}
+		}
+		//pick the best move so far because it has the best value
+		//out of all the possible moves.
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -141,6 +216,7 @@ unsigned concatenate(unsigned x, unsigned y) {
 
 
 //http://mnemstudio.org/game-reversi-example-2.htm
+//That we were linked to
 //www.samsoft.org.uk/reversi/strategy.htm
 //http://www.riscos.com/support/developers/agrm/chap09.htm
 //stackoverflow concatenate
