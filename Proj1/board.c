@@ -21,27 +21,33 @@ void checkMove();
 void retZero();
 void putPiece();
 
-int main(int argc, char const *argv[])
-{
+int main(int argc, char const *argv[]) {
 	newgame();
-	checkMove();
-	screen();
-	while(game==0)
-	{
-		
-		scanf("%s",pos);
-		//system("cls");
-		row=pos[0]-'1';
-		col=pos[2]-'1';
-		islegal(row,col);
-		retZero();
+	while(game == 0) {
 		checkMove();
-		screen();
-		
-	}
 
+		if (turn == 1) {
+			screen();
+			scanf("%s", pos);
+			row=pos[0] - '1';
+			col=pos[2] - '1';
+			islegal(row, col);
+		}
+			retZero();
+
+
+		if (player == 1) {
+			player = 2;
+		} else {
+			player = 1;
+		}
+	}
 	return 0;
 }
+
+
+
+
 
 void screen()
 {
@@ -83,11 +89,6 @@ void islegal(int x, int y) {
 	
 		putPiece(x,y);
 		//board[x][y]=player;
-		if (player == 1) {
-			player = 2;
-		} else {
-			player = 1;
-		}
 		legal=0;
 	}
 }
