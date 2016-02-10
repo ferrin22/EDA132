@@ -1,5 +1,6 @@
 #include <stdio.h>
 //#include <conio.h>
+#include "minimax.c"
 
 int board[8][8];
 int score[2]={0,0};
