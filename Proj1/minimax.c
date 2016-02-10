@@ -16,6 +16,8 @@ int neturalWeight = -5;
 
 //int turn = 5;
 int depth = 0;
+int xx = 0;
+int yy = 0;
 //int board[8][8] = {{0,5,0,0,0,0,0,0}, 
 				   // {0,0,0,0,0,5,0,0},
 				   // {0,0,0,0,0,0,0,0},
@@ -44,7 +46,7 @@ void minimax(int player, int board[8][8], int suggest) {
 
 		for(int x = 0; x < 8; ++x) {
 			for (int y = 0; y < 8; ++y) {
-				printf("%d\n", bestValue);
+				//printf("%d\n", bestValue);
 				if (board[x][y] == suggest) {
 					moves = 1;
 
@@ -101,23 +103,15 @@ void minimax(int player, int board[8][8], int suggest) {
 				}
 			}
 		}
-		if (moves == 0) {
-			printf("No Possible Moves!\n");
-		} else {
-			int yy = bestMove % 10;
+		if (moves != 0) {
+			yy = bestMove % 10;
 			yy = yy - 1;
-			int xx = bestMove / 10;
-			xx = xx -1;
+			xx = bestMove / 10;
+			xx = xx - 1;
 			board[xx][yy] = player;
+			printf("\n");
+			printf("Opponent Moved To %d,%d\n", (xx + 1), (yy + 1));
 		}
-		printf("\n");
-	for(int i=0; i < 8; ++i){
-		for (int j=0; j < 8; ++j)
-		{
-			printf("%d ",board[i][j]);
-		}
-		printf("\n");
-	}
 	}
 }
 
