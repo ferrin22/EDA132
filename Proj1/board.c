@@ -11,7 +11,7 @@ int player=1;
 int legal=0;
 int score1=0;
 int score2=0;
-int turn=5;
+int turn=5,moves=0,cantMove[2];
 
 void screen();
 void newgame();
@@ -27,27 +27,54 @@ int main(int argc, char const *argv[])
 	while(game==0) {
 		
 		checkMove();
+		//printf("%d",moves);
+		if(moves==0){
+			cantMove[0]=1;
+			legal=1;
+			goto nextTurn;
+		}
 		screen();
 		scanf("%s",pos);
 		//system("cls");
 		row=pos[0]-'1';
 		col=pos[2]-'1';
 		islegal(row,col);
+	nextTurn:
 		retZero();
 
 		if (legal == 1) {
 			player = 2;
 			checkMove();
+			if(moves==0){
+				cantMove[1]=1;
+				legal=0;
+				goto nextTurn1;
+			}
 			minimax(player, board, 0, turn);
-			printf("1\n");
+			//printf("1\n");
 			putPiece(xx, yy);
-			printf("2\n");
+			//printf("2\n");
 			retZero();
-			printf("3\n");
+			//printf("3\n");
 			player = 1;
-			printf("4\n");
+			//printf("4\n");
 			legal=0;
-			printf("5\n");
+			//printf("5\n");
+		}
+	nextTurn1:
+		if(cantMove[0]==1 && cantMove[1]==1){
+			if (score1 > score2) {
+				printf("Player 1 Wins!\n");
+			} else if (score2 > score1) {
+				printf("Player 2 Wins!\n");
+			} else {
+				printf("Game Over!\n");
+			}
+			game=1;
+		}else{
+			game=0;
+			cantMove[0]=0;
+			cantMove[1]=0;
 		}
 	}
 	return 0;
@@ -80,15 +107,17 @@ void newgame() {
 	board[4][4]=2;
 }
 
-
 void islegal(int x, int y) {
 	if (x < 0 || x > 7 || y < 0 || y > 7) {
 		printf("\n***Invalid Move***\n");
 		legal=0;
-	} else if (board[x][y] == 0 && board[x][y]!=turn) {
+	} else if (board[x][y] == 1 || board[x][y] == 2) {
+		printf("\n***Invalid Move***\n");
+		legal = 0;
+	} else if (board[x][y] == 0 && board[x][y]!= turn) {
 		printf("\n***Invalid Move***\n");
 		legal=0;
-	} else if(board[x][y]==turn){
+	} else if(board[x][y] == turn){
 		legal=1;
 	
 		putPiece(x,y);
@@ -126,11 +155,11 @@ void retZero(){
 void checkMove(){
 	int stopCheck=0, ic, jc;
 	
-	
+	moves=0;
 	for(int i=0; i < 8; ++i){
 		for (int j=0; j < 8; ++j) {
 			if(board[i][j]==player){
-			
+				//printf("1");
 				//-------- Check South
 				ic=i+1;
 				
@@ -139,15 +168,17 @@ void checkMove(){
 						if(board[ic][j]==player){
 							stopCheck=1;
 						}
-						if(board[ic][j]!=player && board[ic][j]!=0){
+						if(board[ic][j]!=player && board[ic][j]!=0&& board[ic][j]!=turn){
 							++ic;
 						}else if(board[ic][j]==0){
 							board[ic][j]=turn;
+							++moves;
 							stopCheck=1;
 						}
 					}while(stopCheck==0);
 				}
 				
+				//printf("2");
 				//-------- Check North
 				stopCheck=0;
 				ic=i-1;
@@ -157,14 +188,16 @@ void checkMove(){
 						if(board[ic][j]==player){
 							stopCheck=1;
 						}
-						if(board[ic][j]!=player && board[ic][j]!=0){
+						if(board[ic][j]!=player && board[ic][j]!=0 && board[ic][j]!=turn){
 							--ic;
 						}else if(board[ic][j]==0){
 							board[ic][j]=turn;
+							++moves;
 							stopCheck=1;
 						}
 					}while(stopCheck==0);
 				}
+				//printf("3");
 				
 				//-------- Check East
 				stopCheck=0;
@@ -175,15 +208,17 @@ void checkMove(){
 						if(board[i][jc]==player){
 							stopCheck=1;
 						}
-						if(board[i][jc]!=player && board[i][jc]!=0){
+						if(board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
 							++jc;
 						}else if(board[i][jc]==0){
 							board[i][jc]=turn;
+							++moves;
 							stopCheck=1;
 						}
 					}while(stopCheck==0);
 				}
 				
+				//printf("4	");
 				//-------- Check West
 				stopCheck=0;
 				jc=j-1;
@@ -193,15 +228,17 @@ void checkMove(){
 						if(board[i][jc]==player){
 							stopCheck=1;
 						}
-						if(board[i][jc]!=player && board[i][jc]!=0){
+						if(board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
 							--jc;
 						}else if(board[i][jc]==0){
 							board[i][jc]=turn;
+							++moves;
 							stopCheck=1;
 						}
 					}while(stopCheck==0);
 				}
-				
+				ic=0;
+				jc=0;
 //				//-------- Check South-East
 //				stopCheck=0;
 //				ic=i+1;
