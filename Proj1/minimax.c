@@ -34,8 +34,20 @@ int depth = 0;
 
 int * basecase();
 unsigned concatenate();
-int * minimax();
+//int * minimax();
 void zero();
+void minimax();
+
+void minimax(int player, int board[8][8], int depth, int suggest) {
+	for(int x = 0; x < 8; ++x) {
+		for (int y = 0; y < 8; ++y) {
+			if (board[x][y] == 5) {
+				board[x][y] = 2;
+				break;
+			}
+		}
+	}
+}
 
 
 //int main(int argc, char const *argv[]) {
@@ -161,76 +173,76 @@ unsigned concatenate(unsigned x, unsigned y) {
 //time limit will be like: at the beginning of this iteration,
 //if I have enough time, continue, else
 
-int * minimax(int player, int board[8][8], int depth, int suggest) {
-	int opposite = 0;
-	if (player == 1) {
-		opposite = 2;
-	} else {
-		opposite = 1;
-	}
+// int * minimax(int player, int board[8][8], int depth, int suggest) {
+// 	int opposite = 0;
+// 	if (player == 1) {
+// 		opposite = 2;
+// 	} else {
+// 		opposite = 1;
+// 	}
 
 
-	if (depth == 0) {
-		memcpy(nextMove, basecase(player, board, suggest), 2);
-		if (nextMove[0] == 0) {
-			return 0;
-		}
-		return nextMove;
-		// yy = nextMove[0] % 10;
-		// yy = yy - 1;
-		// xx = nextMove[0] / 10;
-		// xx = xx - 1;
-		// board[xx][yy] = player;
-		// printf("\n");
-		// printf("Opponent Moved To %d,%d\n", (xx + 1), (yy + 1));
-	} else {
+// 	if (depth == 0) {
+// 		memcpy(nextMove, basecase(player, board, suggest), 2);
+// 		if (nextMove[0] == 0) {
+// 			return 0;
+// 		}
+// 		return nextMove;
+// 		// yy = nextMove[0] % 10;
+// 		// yy = yy - 1;
+// 		// xx = nextMove[0] / 10;
+// 		// xx = xx - 1;
+// 		// board[xx][yy] = player;
+// 		// printf("\n");
+// 		// printf("Opponent Moved To %d,%d\n", (xx + 1), (yy + 1));
+// 	} else {
 
-		//for every possible move
-		for(int x = 0; x < 8; ++x) {
-			for (int y = 0; y < 8; ++y) {
-		  		if (board[x][y] == suggest) {
-		  			//make that move
-		  			printf("a\n");
-		  			for(int i=0; i < 8; ++i) {
-						for (int j=0; j < 8; ++j) {
-							printf("%d ",board[i][j]);
-						}
-						printf("\n");
-					}
-		  			//board[x][y] = player
-		  			//zero(board, suggest);
-		  			//checkMove();
-		  			for(int i=0; i < 8; ++i){
-		  				for (int j=0; j < 8; ++j)
-		  				{
-		  					printf("%d ",board[i][j]);
-		  				}
-		  				printf("\n");
-		  			}
-		  			printf("b\n");
-		  			//make opponents move
-		  			response[0] = minimax(opposite, board, depth - 1, suggest)[0];
-		  			printf("c\n");
-		  			response[1] = minimax(opposite, board, depth - 1, suggest)[1];
-		  			printf("d\n");
-			 		//undo move
-		  			board[x][y] = 5;
-		  			printf("e\n");
-		  			//compare values
-		  			if (-response[1] >= bestSoFar[1]) {
-		  				printf("f\n");
-		  				bestSoFar[1] = response[1];
-		  				printf("g\n");
-		  				bestSoFar[0] = response[0];
-		  			}
-		  		}
-		  	}
-		}
-		//pick the best move so far because it has the best value
-		//out of all the possible moves.
-	}
-	return bestSoFar;
-}
+// 		//for every possible move
+// 		for(int x = 0; x < 8; ++x) {
+// 			for (int y = 0; y < 8; ++y) {
+// 		  		if (board[x][y] == suggest) {
+// 		  			//make that move
+// 		  			printf("a\n");
+// 		  			for(int i=0; i < 8; ++i) {
+// 						for (int j=0; j < 8; ++j) {
+// 							printf("%d ",board[i][j]);
+// 						}
+// 						printf("\n");
+// 					}
+// 		  			//board[x][y] = player
+// 		  			//zero(board, suggest);
+// 		  			//checkMove();
+// 		  			for(int i=0; i < 8; ++i){
+// 		  				for (int j=0; j < 8; ++j)
+// 		  				{
+// 		  					printf("%d ",board[i][j]);
+// 		  				}
+// 		  				printf("\n");
+// 		  			}
+// 		  			printf("b\n");
+// 		  			//make opponents move
+// 		  			response[0] = minimax(opposite, board, depth - 1, suggest)[0];
+// 		  			printf("c\n");
+// 		  			response[1] = minimax(opposite, board, depth - 1, suggest)[1];
+// 		  			printf("d\n");
+// 			 		//undo move
+// 		  			board[x][y] = 5;
+// 		  			printf("e\n");
+// 		  			//compare values
+// 		  			if (-response[1] >= bestSoFar[1]) {
+// 		  				printf("f\n");
+// 		  				bestSoFar[1] = response[1];
+// 		  				printf("g\n");
+// 		  				bestSoFar[0] = response[0];
+// 		  			}
+// 		  		}
+// 		  	}
+// 		}
+// 		//pick the best move so far because it has the best value
+// 		//out of all the possible moves.
+// 	}
+// 	return bestSoFar;
+// }
 
 
 
