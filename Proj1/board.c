@@ -184,7 +184,7 @@ void checkMove(){
 							ic=ic+1;
 							check=1;
 						}
-						if(board[ic][j]==0 || board[i][jc]==turn){
+						if(board[ic][j]==0 || board[ic][j]==turn){
 							stopCheck=1;
 							if(check==1){
 								board[ic][j]=turn;
@@ -207,7 +207,7 @@ void checkMove(){
 							ic=ic-1;
 							check=1;
 						}
-						if(board[ic][j]==0 || board[i][jc]==turn){
+						if(board[ic][j]==0 || board[ic][j]==turn){
 							stopCheck=1;
 							if(check==1){
 								board[ic][j]=turn;
@@ -267,87 +267,13 @@ void checkMove(){
 				
 			}
 		}
-				
-//				//-------- Check North
-//				stopCheck=0;
-//				ic=i-1;
-//				
-//				if(ic>=0 && board[ic][j]!=player && board[ic][j]!=0 && board[ic][j]!=turn){
-//						while(stopCheck==0){
-//						if(board[ic][j]==player){
-//							stopCheck=1;
-//						}else						if(board[ic][j]!=player && board[ic][j]!=0 && board[ic][j]!=turn){
-//							--ic;
-//						}
-//						 if(board[ic][j]==0){
-//							board[ic][j]=turn;
-//							++moves;
-//							stopCheck=1;
-//						}
-//					}
-//				}
-//				
-//				//-------- Check East
-//				stopCheck=0;
-//				jc=j+1;
-//				
-//				if(jc<8 && board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
-//					while(stopCheck==0){
-//						if(board[i][jc]==player){
-//							stopCheck=1;
-//						}else						if(board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
-//							++jc;
-//						}
-//						 if(board[i][jc]==0){
-//							board[i][jc]=turn;
-//							++moves;
-//							stopCheck=1;
-//						}
-//					}
-//				}
-//				
-//				//-------- Check West
-//				stopCheck=0;
-//				jc=j-1;
-//				
-//				if(jc>=0 && board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
-//					while(stopCheck==0){
-//						if(board[i][jc]==player){
-//							stopCheck=1;
-//						}else						if(board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
-//							--jc;
-//						}
-//						 if(board[i][jc]==0){
-//							board[i][jc]=turn;
-//							++moves;
-//							stopCheck=1;
-//						}
-//					}
-//				}
-//				//-------- Check South-East
-//				stopCheck=0;
-//				ic=i+1;
-//				jc=j+1;
-//				
-//				if(ic<8 && jc<8 && board[ic][jc]!=player && board[ic][jc]!=0&& board[ic][jc]!=turn){
-//					do{
-//						if(board[ic][jc]!=player && board[ic][jc]!=0 ){
-//							++ic;
-//							++jc;
-//						}else if(board[ic][jc]==0){
-//							board[ic][jc]=turn;
-//							stopCheck=1;
-//						}
-//					}while(stopCheck==0);
-//				}
-			}
-		}
+	
+	}
+}
 	
 void putPiece(int x, int y){
 	int ic, jc,stopCheck=0,full=0;
 	board[x][y]=player;
-//	screen();
-//	getch();
 	
 	for(int i=0;i<8;++i){
 		for(int j=0; j<8 ;++j){
@@ -358,7 +284,7 @@ void putPiece(int x, int y){
 				//----------------South
 				ic=i+1;
 				if(ic<8 && board[ic][j]!=player && board[ic][j]!=0){
-					//printf("s");
+					//printf("s ");
 					while(stopCheck==0){
 						if(board[ic][j]==player || ic>=8){
 							stopCheck=1;
@@ -379,12 +305,13 @@ void putPiece(int x, int y){
 				}
 				full=0;
 				stopCheck=0;
+	
 				
 				
 				//----------------North
 				ic=i-1;
 				if(ic>=0 && board[ic][j]!=player && board[ic][j]!=0){
-					//printf("n");
+					//printf("n ");
 					while(stopCheck==0){
 						if(board[ic][j]==player || ic<0){
 							stopCheck=1;
@@ -409,7 +336,7 @@ void putPiece(int x, int y){
 				//----------------East
 				jc=j+1;
 				if(jc<8 && board[i][jc]!=player && board[i][jc]!=0){
-					//printf("e");
+					//printf("e ");
 					while(stopCheck==0){
 						if(board[i][jc]==player || jc>=8){
 							stopCheck=1;
@@ -517,17 +444,17 @@ void putPiece(int x, int y){
 				//----------------North-East
 				ic=i-1;
 				jc=j+1;
-				if(ic>=0 && jc<8 && board[ic][jc]!=player && board[ic][jc]!=0){
+				if(ic>=0 && jc<8 && board[ic][jc]!=player && board[ic][jc]!=0 && board[ic][jc]!=turn){
 					//printf("ne ");
 					while(stopCheck==0){
 						if(board[ic][jc]==player || ic<0 || jc>=8){
 							stopCheck=1;
 						}
-						if(board[ic][jc]!=player && board[ic][jc]!=0){
+						if(board[ic][jc]!=player && board[ic][jc]!=0 && board[ic][jc]!=turn){
 							ic=ic-1;
 							jc=jc+1;
 							full=1;
-						}else if(board[ic][jc]==0){
+						}else if(board[ic][jc]==0 || board[ic][jc]==turn){
 							stopCheck=1;
 							full=0;
 						}
@@ -565,7 +492,7 @@ void putPiece(int x, int y){
 					}
 					if(full==1){
 						int fy=y;
-						for(int fx=ic;fx<=i;++fx){
+						for(int fx=i;fx<=ic;++fx){
 							board[fx][fy]=player;
 							fy=fy-1;
 						}
@@ -573,7 +500,20 @@ void putPiece(int x, int y){
 				}
 				full=0;
 				stopCheck=0;
-			}			
+//				screen();
+		
+			
 		}
 	}
+	
+	
+
 }
+}
+
+
+
+
+
+
+

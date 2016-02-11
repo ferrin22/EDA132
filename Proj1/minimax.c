@@ -36,7 +36,7 @@ int * basecase();
 unsigned concatenate();
 int * minimax();
 void zero();
-void checktheMove();
+void checkforMoves();
 
 
 //int main(int argc, char const *argv[]) {
@@ -161,6 +161,7 @@ unsigned concatenate(unsigned x, unsigned y) {
 //if I have enough time, continue, else
 
 int * minimax(int player, int board[8][8], int depth, int suggest) {
+	printf("yo\n");
 	int opposite = 0;
 	if (player == 1) {
 		opposite = 2;
@@ -189,7 +190,7 @@ int * minimax(int player, int board[8][8], int depth, int suggest) {
 			for (int y = 0; y < 8; ++y) {
 		  		if (board[x][y] == suggest) {
 		  			//make that move
-		  			printf("a\n");
+		  			//printf("a\n");
 		  	// 		for(int i=0; i < 8; ++i) {
 					// 	for (int j=0; j < 8; ++j) {
 					// 		printf("%d ",board[i][j]);
@@ -206,22 +207,22 @@ int * minimax(int player, int board[8][8], int depth, int suggest) {
 		  			// 	}
 		  			// 	printf("\n");
 		  			// }
-		  			printf("b\n");
+		  			//printf("b\n");
 		  			//make opponents move
-		  			response[0] = minimax(opposite, board, depth - 1, suggest)[0];
-		  			printf("c\n");
-		  			response[1] = minimax(opposite, board, depth - 1, suggest)[1];
-		  			printf("d\n");
+		  			memcpy(response, minimax(opposite, board, depth - 1, suggest), 2);
+		  			//printf("c\n");
+		  			//response[1] = minimax(opposite, board, depth - 1, suggest)[1];
+		  			//printf("d\n");
 			 		//undo move
 		  			board[x][y] = 5;
-		  			checktheMove(board, player, suggest);
-		  			zero();
-		  			printf("e\n");
+		  			checkforMoves(board, player, suggest);
+		  			zero(board, suggest);
+		  			//printf("e\n");
 		  			//compare values
 		  			if (-response[1] >= bestSoFar[1]) {
-		  				printf("f\n");
+		  				//printf("f\n");
 		  				bestSoFar[1] = response[1];
-		  				printf("g\n");
+		  				//printf("g\n");
 		  				bestSoFar[0] = response[0];
 		  			}
 		  		}
@@ -252,7 +253,7 @@ void zero(int theboard[8][8], int suggest){
 
 
 
-void checktheMove(int board[8][8], int player, int turn){
+void checkforMoves(int board[8][8], int player, int turn){
 	int stopCheck=0, ic, jc,check;
 	
 	for(int i=0; i < 8; ++i){
@@ -271,7 +272,7 @@ void checktheMove(int board[8][8], int player, int turn){
 							ic=ic+1;
 							check=1;
 						}
-						if(board[ic][j]==0 || board[i][jc]==turn){
+						if(board[ic][j]==0 || board[ic][j]==turn){
 							stopCheck=1;
 							if(check==1){
 								board[ic][j]=turn;
@@ -293,7 +294,7 @@ void checktheMove(int board[8][8], int player, int turn){
 							ic=ic-1;
 							check=1;
 						}
-						if(board[ic][j]==0 || board[i][jc]==turn){
+						if(board[ic][j]==0 || board[ic][j]==turn){
 							stopCheck=1;
 							if(check==1){
 								board[ic][j]=turn;
@@ -343,13 +344,15 @@ void checktheMove(int board[8][8], int player, int turn){
 							if(check==1){
 							
 							board[i][jc]=turn;
-						}
+							}
 						}
 					}
 				}
-				stopCheck=0;				
+				stopCheck=0;
+				
 			}
 		}
+	
 	}
 }
 
