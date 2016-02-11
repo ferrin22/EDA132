@@ -13,9 +13,8 @@ int middleWeight = 5;
 int centerWeight = 0;
 int dangerWeight = -25;
 int neturalWeight = -5;
-int bestValue = -1000000;
 
-int combo[2] = {0, -1000000};
+static int combo[2] = {0, -1000000};
 
 //int turn = 5;
 int depth = 0;
@@ -31,7 +30,7 @@ int yy = 0;
 				   //{0,0,0,5,0,0,0,0}};
 
 
-int basecase();
+int * basecase();
 unsigned concatenate();
 void minimax();
 
@@ -40,12 +39,13 @@ void minimax();
 //	return 0;
 //}
 
-int basecase(int player, int board[8][8], int suggest) {
+int * basecase(int player, int board[8][8], int suggest) {
 	//if depth is 0, search for the current 
 	//highest ranked move
 	int found = 0;
 	int coordinate = 0;
 	int bestMove = 0;
+	int bestValue = -1000000;
 	int moves = 0;
 	if (depth == 0) {
 
@@ -133,7 +133,9 @@ int basecase(int player, int board[8][8], int suggest) {
 			//board[xx][yy] = player;
 			//printf("\n");
 			//printf("Opponent Moved To %d,%d\n", (xx + 1), (yy + 1));
-			return coordinate;
+			combo[0] = bestMove;
+			combo[1] = bestValue;
+			return combo;
 		}
 	}
 	return 0;
@@ -157,7 +159,7 @@ unsigned concatenate(unsigned x, unsigned y) {
 
 
 void minimax(int player, int board[8][8], int depth, int suggest) {
-	int nextMove = 0;
+	int nextMove[2] = {0,0};
 	int bestValueSoFar = -1000000;
 	int bestMoveSoFar = 0;
 	int opposite = 0;
@@ -169,13 +171,14 @@ void minimax(int player, int board[8][8], int depth, int suggest) {
 
 
 	if (depth == 0) {
-		nextMove = basecase(player, board, suggest);
-		if (nextMove == 0) {
+		nextMove[0] = basecase(player, board, suggest)[0];
+		nextMove[1] = basecase(player, board, suggest)[1];
+		if (nextMove[0] == 0) {
 			return;
 		}
-		yy = nextMove % 10;
+		yy = nextMove[0] % 10;
 		yy = yy - 1;
-		xx = nextMove / 10;
+		xx = nextMove[0] / 10;
 		xx = xx - 1;
 		board[xx][yy] = player;
 		printf("\n");
@@ -183,27 +186,27 @@ void minimax(int player, int board[8][8], int depth, int suggest) {
 	} else {
 
 		//for every possible move
-		for(int x = 0; x < 8; ++x) {
-			for (int y = 0; y < 8; ++y) {
-				if (board[x][y] == suggest) {
-					//make that move
-					board[x][y] = player;
-					//make opponents move
-					int response = minimax(opposite, board, depth - 1, suggest);
-					//grab response value
-					int resVal = bestValue;
-					//reset that value for future moves;
-					bestValue = -1000000;
-					//undo move
-					board[x][y] = 5;
-					//compare values
-					if (resVal >= bestValueSoFar) {
-						bestValueSoFar = resVal;
-						bestMoveSoFar = response;
-					}
-				}
-			}
-		}
+		// for(int x = 0; x < 8; ++x) {
+		// 	for (int y = 0; y < 8; ++y) {
+		// 		if (board[x][y] == suggest) {
+		// 			//make that move
+		// 			board[x][y] = player;
+		// 			//make opponents move
+		// 			int response = minimax(opposite, board, depth - 1, suggest);
+		// 			//grab response value
+		// 			int resVal = bestValue;
+		// 			//reset that value for future moves;
+		// 			bestValue = -1000000;
+		// 			//undo move
+		// 			board[x][y] = 5;
+		// 			//compare values
+		// 			if (resVal >= bestValueSoFar) {
+		// 				bestValueSoFar = resVal;
+		// 				bestMoveSoFar = response;
+		// 			}
+		// 		}
+		// 	}
+		// }
 		//pick the best move so far because it has the best value
 		//out of all the possible moves.
 	}

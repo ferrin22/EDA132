@@ -50,7 +50,9 @@ int main(int argc, char const *argv[])
 				legal=0;
 				goto nextTurn1;
 			}
+			printf("1\n");
 			minimax(player, board, 0, turn);
+			printf("2\n");
 			//printf("1\n");
 			putPiece(xx, yy);
 			//printf("2\n");
