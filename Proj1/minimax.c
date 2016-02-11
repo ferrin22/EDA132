@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 int corners[] = {11,18,81,88};
 int sides[] = {13,14,15,16,83,84,85,86,31,41,51,61,38,48,58,68};
@@ -56,6 +57,7 @@ int * basecase(int player, int board[8][8], int suggest) {
 			for (int y = 0; y < 8; ++y) {
 				//printf("%d\n", bestValue);
 				if (board[x][y] == suggest) {
+					printf("%d,%d\n", x+1,y+1);
 					moves = 1;
 
 					coordinate = concatenate(x+1,y+1);
@@ -169,8 +171,7 @@ int * minimax(int player, int board[8][8], int depth, int suggest) {
 
 
 	if (depth == 0) {
-		nextMove[0] = basecase(player, board, suggest)[0];
-		nextMove[1] = basecase(player, board, suggest)[1];
+		memcpy(nextMove, basecase(player, board, suggest), 2);
 		if (nextMove[0] == 0) {
 			return 0;
 		}
@@ -196,9 +197,9 @@ int * minimax(int player, int board[8][8], int depth, int suggest) {
 						}
 						printf("\n");
 					}
-		  			board[x][y] = player
-		  			zero(board, suggest);
-		  			checkMove();
+		  			//board[x][y] = player
+		  			//zero(board, suggest);
+		  			//checkMove();
 		  			for(int i=0; i < 8; ++i){
 		  				for (int j=0; j < 8; ++j)
 		  				{
@@ -265,3 +266,4 @@ void zero(int theboard[8][8], int suggest){
 //www.samsoft.org.uk/reversi/strategy.htm
 //http://www.riscos.com/support/developers/agrm/chap09.htm
 //stackoverflow concatenate
+//http://stackoverflow.com/questions/12700497/how-to-concatenate-two-integers-in-c/12700533#12700533

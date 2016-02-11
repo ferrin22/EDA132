@@ -27,7 +27,7 @@ int main(int argc, char const *argv[])
 	while(game==0) {
 		
 		checkMove();
-		printf("%d",moves);
+		//printf("%d",moves);
 		if(moves==0){
 			cantMove[0]=1;
 			legal=1;
@@ -54,7 +54,9 @@ int main(int argc, char const *argv[])
 				legal=0;
 				goto nextTurn1;
 			}
-			int ai = minimax(player, board, 1, turn)[0];
+			int ai = minimax(player, board, 0, turn)[0];
+			printf("%d\n", ai);
+			if (ai != 0) {
 			yy = ai % 10;
 		 	yy = yy - 1;
 		 	xx = ai / 10;
@@ -65,6 +67,7 @@ int main(int argc, char const *argv[])
 		//minimax3(player, board, turn);
 			//printf("1\n");
 			putPiece(xx, yy);
+		}
 			screen();
 			//printf("2\n");
 			retZero();
