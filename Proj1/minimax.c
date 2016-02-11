@@ -13,19 +13,22 @@ int middleWeight = 5;
 int centerWeight = 0;
 int dangerWeight = -25;
 int neturalWeight = -5;
+int bestValue = -1000000;
+
+int combo[2] = {0, -1000000};
 
 //int turn = 5;
 int depth = 0;
 int xx = 0;
 int yy = 0;
 //int board[8][8] = {{0,5,0,0,0,0,0,0}, 
-				   // {0,0,0,0,0,5,0,0},
-				   // {0,0,0,0,0,0,0,0},
-				   // {0,0,0,2,1,0,0,0},
-				   // {0,0,0,1,2,0,0,0},
-				   // {0,0,0,0,0,0,0,0},
-				   // {0,0,0,0,0,0,0,0},
-				   // {0,0,0,5,0,0,0,0}};
+				   //{0,0,0,0,0,5,0,0},
+				   //{0,0,0,0,0,0,0,0},
+				   //{0,0,0,2,1,0,0,0},
+				   //{0,0,0,1,2,0,0,0},
+				   //{0,0,0,0,0,0,0,0},
+				   //{0,0,0,0,0,0,0,0},
+				   //{0,0,0,5,0,0,0,0}};
 
 
 int basecase();
@@ -43,7 +46,6 @@ int basecase(int player, int board[8][8], int suggest) {
 	int found = 0;
 	int coordinate = 0;
 	int bestMove = 0;
-	int bestValue = -1000000;
 	int moves = 0;
 	if (depth == 0) {
 
@@ -158,6 +160,7 @@ void minimax(int player, int board[8][8], int depth, int suggest) {
 	int nextMove = 0;
 	int bestValueSoFar = -1000000;
 	int bestMoveSoFar = 0;
+	int opposite = 0;
 	if (player == 1) {
 		opposite = 2;
 	} else {
@@ -186,10 +189,18 @@ void minimax(int player, int board[8][8], int depth, int suggest) {
 					//make that move
 					board[x][y] = player;
 					//make opponents move
-					int response = minimax();
+					int response = minimax(opposite, board, depth - 1, suggest);
+					//grab response value
+					int resVal = bestValue;
+					//reset that value for future moves;
+					bestValue = -1000000;
+					//undo move
+					board[x][y] = 5;
 					//compare values
-
-
+					if (resVal >= bestValueSoFar) {
+						bestValueSoFar = resVal;
+						bestMoveSoFar = response;
+					}
 				}
 			}
 		}
