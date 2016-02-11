@@ -21,7 +21,7 @@ int response[2] = {0,-10000};
 int bestSoFar[2] = {0,-10000};
 
 //int turn = 5;
-int depth = 0;
+//int depth = 0;
 //int board[8][8] = {{0,5,0,0,0,0,0,0}, 
 				   //{0,0,0,0,0,5,0,0},
 				   //{0,0,0,0,0,0,0,0},
@@ -34,20 +34,9 @@ int depth = 0;
 
 int * basecase();
 unsigned concatenate();
-//int * minimax();
+int * minimax();
 void zero();
-void minimax();
-
-void minimax(int player, int board[8][8], int depth, int suggest) {
-	for(int x = 0; x < 8; ++x) {
-		for (int y = 0; y < 8; ++y) {
-			if (board[x][y] == 5) {
-				board[x][y] = 2;
-				break;
-			}
-		}
-	}
-}
+void checktheMove();
 
 
 //int main(int argc, char const *argv[]) {
@@ -63,97 +52,95 @@ int * basecase(int player, int board[8][8], int suggest) {
 	int bestMove = 0;
 	int bestValue = -1000000;
 	int moves = 0;
-	if (depth == 0) {
 
-		for(int x = 0; x < 8; ++x) {
-			for (int y = 0; y < 8; ++y) {
-				//printf("%d\n", bestValue);
-				if (board[x][y] == suggest) {
-					printf("%d,%d\n", x+1,y+1);
-					moves = 1;
+	for(int x = 0; x < 8; ++x) {
+		for (int y = 0; y < 8; ++y) {
+			//printf("%d\n", bestValue);
+			if (board[x][y] == suggest) {
+				//printf("%d,%d\n", x+1,y+1);
+				moves = 1;
 
-					coordinate = concatenate(x+1,y+1);
+				coordinate = concatenate(x+1,y+1);
 
-					for (int ne = 0; ne < 16; ne++) {
-						if (netural[ne] == coordinate) {
+				for (int ne = 0; ne < 16; ne++) {
+					if (netural[ne] == coordinate) {
+						found = 1;
+						if (neturalWeight > bestValue) {
+							bestValue = neturalWeight;
+							bestMove = coordinate;
+						}
+					}
+				}
+				if (found == 0) {
+					for (int mi = 0; mi < 12; mi++) {
+						if (middle[mi] == coordinate) {
 							found = 1;
-							if (neturalWeight > bestValue) {
-								bestValue = neturalWeight;
+							if (middleWeight > bestValue) {
+								bestValue = middleWeight;
 								bestMove = coordinate;
 							}
 						}
 					}
-					if (found == 0) {
-						for (int mi = 0; mi < 12; mi++) {
-							if (middle[mi] == coordinate) {
-								found = 1;
-								if (middleWeight > bestValue) {
-									bestValue = middleWeight;
-									bestMove = coordinate;
-								}
+				}
+				if (found == 0) {
+					for (int si = 0; si < 16; si++) {
+						if (sides[si] == coordinate) {
+							found = 1;
+							if (sideWeight > bestValue) {
+								bestValue = sideWeight;
+								bestMove = coordinate;
 							}
 						}
 					}
-					if (found == 0) {
-						for (int si = 0; si < 16; si++) {
-							if (sides[si] == coordinate) {
-								found = 1;
-								if (sideWeight > bestValue) {
-									bestValue = sideWeight;
-									bestMove = coordinate;
-								}
+				}
+				if (found == 0) {
+					for (int da = 0; da < 12; da++) {
+						if (danger[da] == coordinate) {
+							found = 1;
+							if (dangerWeight > bestValue) {
+								bestValue = dangerWeight;
+								bestMove = coordinate;
 							}
 						}
 					}
-					if (found == 0) {
-						for (int da = 0; da < 12; da++) {
-							if (danger[da] == coordinate) {
-								found = 1;
-								if (dangerWeight > bestValue) {
-									bestValue = dangerWeight;
-									bestMove = coordinate;
-								}
+				}
+				if (found == 0) {
+					for (int co = 0; co < 4; co++) {
+						if (corners[co] == coordinate) {
+							found = 1;
+							if (cornerWeight > bestValue) {
+								bestValue = cornerWeight;
+								bestMove = coordinate;
 							}
 						}
 					}
-					if (found == 0) {
-						for (int co = 0; co < 4; co++) {
-							if (corners[co] == coordinate) {
-								found = 1;
-								if (cornerWeight > bestValue) {
-									bestValue = cornerWeight;
-									bestMove = coordinate;
-								}
-							}
-						}
-					}	
-					if (found == 0) {
-						for (int ce = 0; ce < 4; ce++) {
-							if (center[ce] == coordinate) {
-								found = 1;
-								if (centerWeight > bestValue) {
-									bestValue = centerWeight;
-									bestMove = coordinate;
-								}
+				}	
+				if (found == 0) {
+					for (int ce = 0; ce < 4; ce++) {
+						if (center[ce] == coordinate) {
+							found = 1;
+							if (centerWeight > bestValue) {
+								bestValue = centerWeight;
+								bestMove = coordinate;
 							}
 						}
 					}
 				}
 			}
 		}
-		found = 0;
-		if (moves != 0) {
-			//yy = bestMove % 10;
-			//yy = yy - 1;
-			//xx = bestMove / 10;
-			//xx = xx - 1;
-			//board[xx][yy] = player;
-			//printf("\n");
-			//printf("Opponent Moved To %d,%d\n", (xx + 1), (yy + 1));
-			combo[0] = bestMove;
-			combo[1] = bestValue;
-			return combo;
-		}
+	}
+	found = 0;
+	if (moves != 0) {
+		//yy = bestMove % 10;
+		//yy = yy - 1;
+		//xx = bestMove / 10;
+		//xx = xx - 1;
+		//board[xx][yy] = player;
+		//printf("\n");
+		//printf("Opponent Moved To %d,%d\n", (xx + 1), (yy + 1));
+		combo[0] = bestMove;
+		combo[1] = bestValue;
+		return combo;
 	}
 	return 0;
 }
@@ -173,76 +160,78 @@ unsigned concatenate(unsigned x, unsigned y) {
 //time limit will be like: at the beginning of this iteration,
 //if I have enough time, continue, else
 
-// int * minimax(int player, int board[8][8], int depth, int suggest) {
-// 	int opposite = 0;
-// 	if (player == 1) {
-// 		opposite = 2;
-// 	} else {
-// 		opposite = 1;
-// 	}
+int * minimax(int player, int board[8][8], int depth, int suggest) {
+	int opposite = 0;
+	if (player == 1) {
+		opposite = 2;
+	} else {
+		opposite = 1;
+	}
 
 
-// 	if (depth == 0) {
-// 		memcpy(nextMove, basecase(player, board, suggest), 2);
-// 		if (nextMove[0] == 0) {
-// 			return 0;
-// 		}
-// 		return nextMove;
-// 		// yy = nextMove[0] % 10;
-// 		// yy = yy - 1;
-// 		// xx = nextMove[0] / 10;
-// 		// xx = xx - 1;
-// 		// board[xx][yy] = player;
-// 		// printf("\n");
-// 		// printf("Opponent Moved To %d,%d\n", (xx + 1), (yy + 1));
-// 	} else {
+	if (depth == 0) {
+		memcpy(nextMove, basecase(player, board, suggest), 2);
+		if (nextMove[0] == 0) {
+			return 0;
+		}
+		return nextMove;
+		// yy = nextMove[0] % 10;
+		// yy = yy - 1;
+		// xx = nextMove[0] / 10;
+		// xx = xx - 1;
+		// board[xx][yy] = player;
+		// printf("\n");
+		// printf("Opponent Moved To %d,%d\n", (xx + 1), (yy + 1));
+	} else {
 
-// 		//for every possible move
-// 		for(int x = 0; x < 8; ++x) {
-// 			for (int y = 0; y < 8; ++y) {
-// 		  		if (board[x][y] == suggest) {
-// 		  			//make that move
-// 		  			printf("a\n");
-// 		  			for(int i=0; i < 8; ++i) {
-// 						for (int j=0; j < 8; ++j) {
-// 							printf("%d ",board[i][j]);
-// 						}
-// 						printf("\n");
-// 					}
-// 		  			//board[x][y] = player
-// 		  			//zero(board, suggest);
-// 		  			//checkMove();
-// 		  			for(int i=0; i < 8; ++i){
-// 		  				for (int j=0; j < 8; ++j)
-// 		  				{
-// 		  					printf("%d ",board[i][j]);
-// 		  				}
-// 		  				printf("\n");
-// 		  			}
-// 		  			printf("b\n");
-// 		  			//make opponents move
-// 		  			response[0] = minimax(opposite, board, depth - 1, suggest)[0];
-// 		  			printf("c\n");
-// 		  			response[1] = minimax(opposite, board, depth - 1, suggest)[1];
-// 		  			printf("d\n");
-// 			 		//undo move
-// 		  			board[x][y] = 5;
-// 		  			printf("e\n");
-// 		  			//compare values
-// 		  			if (-response[1] >= bestSoFar[1]) {
-// 		  				printf("f\n");
-// 		  				bestSoFar[1] = response[1];
-// 		  				printf("g\n");
-// 		  				bestSoFar[0] = response[0];
-// 		  			}
-// 		  		}
-// 		  	}
-// 		}
-// 		//pick the best move so far because it has the best value
-// 		//out of all the possible moves.
-// 	}
-// 	return bestSoFar;
-// }
+		//for every possible move
+		for(int x = 0; x < 8; ++x) {
+			for (int y = 0; y < 8; ++y) {
+		  		if (board[x][y] == suggest) {
+		  			//make that move
+		  			printf("a\n");
+		  	// 		for(int i=0; i < 8; ++i) {
+					// 	for (int j=0; j < 8; ++j) {
+					// 		printf("%d ",board[i][j]);
+					// 	}
+					// 	printf("\n");
+					// }
+		  			//board[x][y] = player
+		  			//zero(board, suggest);
+		  			//checkMove();
+		  			// for(int i=0; i < 8; ++i){
+		  			// 	for (int j=0; j < 8; ++j)
+		  			// 	{
+		  			// 		printf("%d ",board[i][j]);
+		  			// 	}
+		  			// 	printf("\n");
+		  			// }
+		  			printf("b\n");
+		  			//make opponents move
+		  			response[0] = minimax(opposite, board, depth - 1, suggest)[0];
+		  			printf("c\n");
+		  			response[1] = minimax(opposite, board, depth - 1, suggest)[1];
+		  			printf("d\n");
+			 		//undo move
+		  			board[x][y] = 5;
+		  			checktheMove(board, player, suggest);
+		  			zero();
+		  			printf("e\n");
+		  			//compare values
+		  			if (-response[1] >= bestSoFar[1]) {
+		  				printf("f\n");
+		  				bestSoFar[1] = response[1];
+		  				printf("g\n");
+		  				bestSoFar[0] = response[0];
+		  			}
+		  		}
+		  	}
+		}
+		//pick the best move so far because it has the best value
+		//out of all the possible moves.
+	}
+	return bestSoFar;
+}
 
 
 
@@ -263,7 +252,106 @@ void zero(int theboard[8][8], int suggest){
 
 
 
-
+void checktheMove(int board[8][8], int player, int turn){
+	int stopCheck=0, ic, jc,check;
+	
+	for(int i=0; i < 8; ++i){
+		for (int j=0; j < 8; ++j) {
+			if(board[i][j]==player){
+				
+				//-------- Check South
+				ic=i+1;
+				
+				if(ic<8 && board[ic][j]!=player && board[ic][j]!=0 && board[ic][j]!=turn){
+					while(stopCheck==0){
+						if(board[ic][j]==player || ic>=8){
+							stopCheck=1;
+						}
+						if(board[ic][j]!=player && board[ic][j]!=0 && board[ic][j]!=turn){
+							ic=ic+1;
+							check=1;
+						}
+						if(board[ic][j]==0 || board[i][jc]==turn){
+							stopCheck=1;
+							if(check==1){
+								board[ic][j]=turn;
+							}
+						}
+					}
+				}
+				stopCheck=0;
+				
+				//-------- Check North
+				ic=i-1;
+				
+				if(ic>=0 && board[ic][j]!=player && board[ic][j]!=0 && board[ic][j]!=turn){
+					while(stopCheck==0){
+						if(board[ic][j]==player || ic<0){
+							stopCheck=1;
+						}
+						if(board[ic][j]!=player && board[ic][j]!=0 && board[ic][j]!=turn){
+							ic=ic-1;
+							check=1;
+						}
+						if(board[ic][j]==0 || board[i][jc]==turn){
+							stopCheck=1;
+							if(check==1){
+								board[ic][j]=turn;
+							}
+						}
+					}
+				}
+				stopCheck=0;
+				
+				//-------- Check East
+				jc=j+1;
+				check=0;
+				if(jc<8 && board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
+					while(stopCheck==0){
+						
+						if(board[i][jc]==player || jc>=8){
+							stopCheck=1;
+						}
+						if(board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
+							jc=jc+1;
+							check=1;
+						}
+						if(board[i][jc]==0 || board[i][jc]==turn){
+							stopCheck=1;
+							if(check==1){
+								board[i][jc]=turn;
+							}
+						}
+					}
+				}
+				stopCheck=0;
+				
+				//-------- Check West
+				jc=j-1;
+				check=0;
+				if(jc>=0 && board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
+					while(stopCheck==0){
+						if(board[i][jc]==player || jc<0){
+							stopCheck=1;
+						}
+						if(board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
+							jc=jc-1;
+							check=1;
+						}
+						if(board[i][jc]==0 || board[i][jc]==turn){
+							stopCheck=1;
+							if(check==1){
+							
+							board[i][jc]=turn;
+						}
+						}
+					}
+				}
+				stopCheck=0;				
+			}
+		}
+	}
+}
 
 
 

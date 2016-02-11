@@ -1,6 +1,6 @@
 #include <stdio.h>
 //#include <conio.h>
-//#include "minimax.c"
+#include "minimax.c"
 
 int board[8][8];
 int score[2]={0,0};
@@ -20,18 +20,18 @@ void slowScore();
 void checkMove();
 void retZero();
 void putPiece(int x, int y);
-void minimax();
 
 int main(int argc, char const *argv[])
 {
 	newgame();
 	while(game==0) {
+		
 		checkMove();
-		printf("%d",moves);
+		//printf("%d",moves);
 		if(moves==0){
 			cantMove[0]=1;
 			legal=1;
-			goto nextTurn;
+			//goto nextTurn;
 		}
 		screen();
 		scanf("%s",pos);
@@ -42,7 +42,8 @@ int main(int argc, char const *argv[])
 		if(legal==1){
 			retZero();
 			putPiece(row,col);
-			board[row][col]=player;	
+			//screen();
+			//board[row][col]=player;
 		}
 	nextTurn:
 		retZero();
@@ -54,21 +55,21 @@ int main(int argc, char const *argv[])
 				legal=0;
 				goto nextTurn1;
 			}
-			minimax();
-			//printf("k\n");
-			//yy = ai % 10;
-		 	//yy = yy - 1;
-		 	//xx = ai / 10;
-		 	//xx = xx - 1;
+			int ai = minimax(player, board, 6, turn)[0];
+			yy = ai % 10;
+		 	yy = yy - 1;
+		 	xx = ai / 10;
+		 	xx = xx - 1;
 		 	//board[xx][yy] = player;
-	 		//printf("\n");
-			//printf("Opponent Moved To %d,%d\n", (xx + 1), (yy + 1));
+	 		printf("\n");
+			printf("Opponent Moved To %d,%d\n", (xx + 1), (yy + 1));
 		//minimax3(player, board, turn);
 			//printf("1\n");
 			putPiece(xx, yy);
 			//screen();
 			//printf("2\n");
 			retZero();
+			//printf("here");
 			//printf("3\n");
 			player = 1;
 			//printf("4\n");
@@ -105,16 +106,6 @@ void screen(){
 	printf("Enter Position (x,y): ");
 }
 
-void minimax() {
-	for(int x = 0; x < 8; ++x) {
-		for (int y = 0; y < 8; ++y) {
-			if (board[x][y] == 5) {
-				board[x][y] = 2;
-				return;
-			}
-		}
-	}
-}
 
 void newgame() {
 	for(int i=0; i < 8; ++i){
@@ -155,7 +146,7 @@ void slowScore() {
 			}
 		}
 	}
-	printf("%d, %d\n", score1, score2);
+	//printf("%d, %d\n", score1, score2);
 }
 
 void retZero(){
@@ -174,7 +165,7 @@ void retZero(){
 }
 
 void checkMove(){
-	int stopCheck=0, ic, jc;
+	int stopCheck=0, ic, jc,check;
 	
 	moves=0;
 	for(int i=0; i < 8; ++i){
@@ -186,75 +177,153 @@ void checkMove(){
 				
 				if(ic<8 && board[ic][j]!=player && board[ic][j]!=0 && board[ic][j]!=turn){
 					while(stopCheck==0){
-						if(board[ic][j]==player){
+						if(board[ic][j]==player || ic>=8){
 							stopCheck=1;
-						}else						if(board[ic][j]!=player && board[ic][j]!=0&& board[ic][j]!=turn){
-							++ic;
 						}
-						if(board[ic][j]==0){
-							board[ic][j]=turn;
-							++moves;
+						if(board[ic][j]!=player && board[ic][j]!=0 && board[ic][j]!=turn){
+							ic=ic+1;
+							check=1;
+						}
+						if(board[ic][j]==0 || board[i][jc]==turn){
 							stopCheck=1;
+							if(check==1){
+								board[ic][j]=turn;
+								++moves;
+							}
 						}
 					}
 				}
+				stopCheck=0;
 				
 				//-------- Check North
-				stopCheck=0;
 				ic=i-1;
 				
 				if(ic>=0 && board[ic][j]!=player && board[ic][j]!=0 && board[ic][j]!=turn){
-						while(stopCheck==0){
-						if(board[ic][j]==player){
+					while(stopCheck==0){
+						if(board[ic][j]==player || ic<0){
 							stopCheck=1;
-						}else						if(board[ic][j]!=player && board[ic][j]!=0 && board[ic][j]!=turn){
-							--ic;
 						}
-						 if(board[ic][j]==0){
-							board[ic][j]=turn;
-							++moves;
+						if(board[ic][j]!=player && board[ic][j]!=0 && board[ic][j]!=turn){
+							ic=ic-1;
+							check=1;
+						}
+						if(board[ic][j]==0 || board[i][jc]==turn){
 							stopCheck=1;
+							if(check==1){
+								board[ic][j]=turn;
+								++moves;
+							}
 						}
 					}
 				}
+				stopCheck=0;
 				
 				//-------- Check East
-				stopCheck=0;
 				jc=j+1;
-				
+				check=0;
 				if(jc<8 && board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
 					while(stopCheck==0){
-						if(board[i][jc]==player){
+						
+						if(board[i][jc]==player || jc>=8){
 							stopCheck=1;
-						}else						if(board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
-							++jc;
 						}
-						 if(board[i][jc]==0){
-							board[i][jc]=turn;
-							++moves;
+						if(board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
+							jc=jc+1;
+							check=1;
+						}
+						if(board[i][jc]==0 || board[i][jc]==turn){
 							stopCheck=1;
+							if(check==1){
+								board[i][jc]=turn;
+								++moves;
+							}
 						}
 					}
 				}
+				stopCheck=0;
 				
 				//-------- Check West
-				stopCheck=0;
 				jc=j-1;
-				
+				check=0;
 				if(jc>=0 && board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
 					while(stopCheck==0){
-						if(board[i][jc]==player){
+						if(board[i][jc]==player || jc<0){
 							stopCheck=1;
-						}else						if(board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
-							--jc;
 						}
-						 if(board[i][jc]==0){
-							board[i][jc]=turn;
-							++moves;
+						if(board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
+							jc=jc-1;
+							check=1;
+						}
+						if(board[i][jc]==0 || board[i][jc]==turn){
 							stopCheck=1;
+							if(check==1){
+							
+							board[i][jc]=turn;
+							++moves;}
 						}
 					}
 				}
+				stopCheck=0;
+				
+			}
+		}
+				
+//				//-------- Check North
+//				stopCheck=0;
+//				ic=i-1;
+//				
+//				if(ic>=0 && board[ic][j]!=player && board[ic][j]!=0 && board[ic][j]!=turn){
+//						while(stopCheck==0){
+//						if(board[ic][j]==player){
+//							stopCheck=1;
+//						}else						if(board[ic][j]!=player && board[ic][j]!=0 && board[ic][j]!=turn){
+//							--ic;
+//						}
+//						 if(board[ic][j]==0){
+//							board[ic][j]=turn;
+//							++moves;
+//							stopCheck=1;
+//						}
+//					}
+//				}
+//				
+//				//-------- Check East
+//				stopCheck=0;
+//				jc=j+1;
+//				
+//				if(jc<8 && board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
+//					while(stopCheck==0){
+//						if(board[i][jc]==player){
+//							stopCheck=1;
+//						}else						if(board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
+//							++jc;
+//						}
+//						 if(board[i][jc]==0){
+//							board[i][jc]=turn;
+//							++moves;
+//							stopCheck=1;
+//						}
+//					}
+//				}
+//				
+//				//-------- Check West
+//				stopCheck=0;
+//				jc=j-1;
+//				
+//				if(jc>=0 && board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
+//					while(stopCheck==0){
+//						if(board[i][jc]==player){
+//							stopCheck=1;
+//						}else						if(board[i][jc]!=player && board[i][jc]!=0 && board[i][jc]!=turn){
+//							--jc;
+//						}
+//						 if(board[i][jc]==0){
+//							board[i][jc]=turn;
+//							++moves;
+//							stopCheck=1;
+//						}
+//					}
+//				}
 //				//-------- Check South-East
 //				stopCheck=0;
 //				ic=i+1;
@@ -273,9 +342,7 @@ void checkMove(){
 //				}
 			}
 		}
-	}
-}
-
+	
 void putPiece(int x, int y){
 	int ic, jc,stopCheck=0,full=0;
 	board[x][y]=player;
@@ -285,12 +352,13 @@ void putPiece(int x, int y){
 	for(int i=0;i<8;++i){
 		for(int j=0; j<8 ;++j){
 			
-			if(board[i][j]==player){
+			if(i==x && j==y){
 				
 				
 				//----------------South
 				ic=i+1;
 				if(ic<8 && board[ic][j]!=player && board[ic][j]!=0){
+					//printf("s");
 					while(stopCheck==0){
 						if(board[ic][j]==player || ic>=8){
 							stopCheck=1;
@@ -316,6 +384,7 @@ void putPiece(int x, int y){
 				//----------------North
 				ic=i-1;
 				if(ic>=0 && board[ic][j]!=player && board[ic][j]!=0){
+					//printf("n");
 					while(stopCheck==0){
 						if(board[ic][j]==player || ic<0){
 							stopCheck=1;
@@ -340,6 +409,7 @@ void putPiece(int x, int y){
 				//----------------East
 				jc=j+1;
 				if(jc<8 && board[i][jc]!=player && board[i][jc]!=0){
+					//printf("e");
 					while(stopCheck==0){
 						if(board[i][jc]==player || jc>=8){
 							stopCheck=1;
@@ -364,6 +434,7 @@ void putPiece(int x, int y){
 				//----------------West
 				jc=j-1;
 				if(jc>=0 && board[i][jc]!=player && board[i][jc]!=0){
+					//printf("w ");
 					while(stopCheck==0){
 						if(board[i][jc]==player || jc<0){
 							stopCheck=1;
@@ -389,6 +460,7 @@ void putPiece(int x, int y){
 				ic=i+1;
 				jc=j+1;
 				if(ic<8 && jc<8 && board[ic][jc]!=player && board[ic][jc]!=0){
+					//printf("se ");
 					while(stopCheck==0){
 						if(board[ic][jc]==player || ic>=8 || jc>=8){
 							stopCheck=1;
@@ -417,6 +489,7 @@ void putPiece(int x, int y){
 				ic=i+1;
 				jc=j-1;
 				if(ic<8 && jc>=0 && board[ic][jc]!=player && board[ic][jc]!=0){
+					//printf("sw ");
 					while(stopCheck==0){
 						if(board[ic][jc]==player || ic>=8 || jc<0){
 							stopCheck=1;
@@ -445,6 +518,7 @@ void putPiece(int x, int y){
 				ic=i-1;
 				jc=j+1;
 				if(ic>=0 && jc<8 && board[ic][jc]!=player && board[ic][jc]!=0){
+					//printf("ne ");
 					while(stopCheck==0){
 						if(board[ic][jc]==player || ic<0 || jc>=8){
 							stopCheck=1;
@@ -457,8 +531,10 @@ void putPiece(int x, int y){
 							stopCheck=1;
 							full=0;
 						}
+						
 					}
 					if(full==1){
+						
 						int fy=y;
 						for(int fx=ic;fx<=i;++fx){
 							board[fx][fy]=player;
@@ -473,6 +549,7 @@ void putPiece(int x, int y){
 				ic=i-1;
 				jc=j-1;
 				if(ic>=0 && jc>=0 && board[ic][jc]!=player && board[ic][jc]!=0){
+					//printf("nw ");
 					while(stopCheck==0){
 						if(board[ic][jc]==player || ic<0 || jc<0){
 							stopCheck=1;
@@ -496,14 +573,7 @@ void putPiece(int x, int y){
 				}
 				full=0;
 				stopCheck=0;
-			}					
+			}			
 		}
 	}
 }
-
-
-
-
-
-
-
