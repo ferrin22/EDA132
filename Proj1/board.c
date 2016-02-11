@@ -55,7 +55,7 @@ int main(int argc, char const *argv[])
 				legal=0;
 				goto nextTurn1;
 			}
-			int ai = minimax(player, board, 6, turn)[0];
+			int ai = minimax(player, board, 10, turn)[0];
 			yy = ai % 10;
 		 	yy = yy - 1;
 		 	xx = ai / 10;

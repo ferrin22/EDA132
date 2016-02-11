@@ -171,6 +171,7 @@ int * minimax(int player, int board[8][8], int depth, int suggest) {
 
 
 	if (depth == 0) {
+		//printf("yp\n");
 		memcpy(nextMove, basecase(player, board, suggest), 2);
 		if (nextMove[0] == 0) {
 			return 0;
