@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 int corners[] = {11,18,81,88};
 int sides[] = {13,14,15,16,83,84,85,86,31,41,51,61,38,48,58,68};
@@ -33,10 +34,10 @@ int bestSoFar[2] = {0,-10000};
 
 
 int * basecase();
-unsigned concatenate();
+unsigned concatenate(unsigned x, unsigned y);
 int * minimax();
-void zero();
-void checkforMoves();
+void zero(int board[8][8], int suggest);
+void checkforMoves(int board[8][8], int player, int turn);
 
 
 //int main(int argc, char const *argv[]) {
@@ -160,8 +161,9 @@ unsigned concatenate(unsigned x, unsigned y) {
 //time limit will be like: at the beginning of this iteration,
 //if I have enough time, continue, else
 
-int * minimax(int player, int board[8][8], int depth, int suggest) {
+int * minimax(int player, int board[8][8], int depth, int suggest, clock_t start, clock_t runTime) {
 	//printf("yo\n");
+
 	int opposite = 0;
 	if (player == 1) {
 		opposite = 2;
@@ -169,6 +171,9 @@ int * minimax(int player, int board[8][8], int depth, int suggest) {
 		opposite = 1;
 	}
 
+	runTime = clock() - start;
+	int msec = runTime * 1000 / CLOCKS_PER_SEC;
+	int milli = msec%1000;
 
 	if (depth == 0) {
 		//printf("yp\n");
@@ -210,7 +215,7 @@ int * minimax(int player, int board[8][8], int depth, int suggest) {
 		  			// }
 		  			//printf("b\n");
 		  			//make opponents move
-		  			memcpy(response, minimax(opposite, board, depth - 1, suggest), 2);
+		  			memcpy(response, minimax(opposite, board, depth - 1, suggest, start, runTime), 2);
 		  			//printf("c\n");
 		  			//response[1] = minimax(opposite, board, depth - 1, suggest)[1];
 		  			//printf("d\n");
@@ -364,7 +369,7 @@ void checkforMoves(int board[8][8], int player, int turn){
 
 
 
-
+//http://stackoverflow.com/questions/459691/best-timing-method-in-c
 //http://mnemstudio.org/game-reversi-example-2.htm
 //That we were linked to
 //www.samsoft.org.uk/reversi/strategy.htm

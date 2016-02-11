@@ -12,6 +12,7 @@ int legal=0;
 int score1=0;
 int score2=0;
 int turn=5,moves=0,cantMove[2],xx,yy;
+int inp[1];
 
 void screen();
 void newgame();
@@ -24,8 +25,13 @@ void putPiece(int x, int y);
 int main(int argc, char const *argv[])
 {
 	newgame();
+	printf("How Many Milliseconds Per Move Would You Like Your Opponent To Take?\n");
+	scanf("%d",inp);
+	int mils = *inp;
+	//printf("hello %d\n", hello);
 	while(game==0) {
-		
+
+		//printf("%d\n", hey);
 		checkMove();
 		//printf("%d",moves);
 		if(moves==0){
@@ -55,7 +61,8 @@ int main(int argc, char const *argv[])
 				legal=0;
 				goto nextTurn1;
 			}
-			int ai = minimax(player, board, 10, turn)[0];
+			clock_t begin = clock(), runningTime;
+			int ai = minimax(player, board, 6, turn, begin, runningTime)[0];
 			yy = ai % 10;
 		 	yy = yy - 1;
 		 	xx = ai / 10;
