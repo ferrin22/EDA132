@@ -161,7 +161,7 @@ unsigned concatenate(unsigned x, unsigned y) {
 //if I have enough time, continue, else
 
 int * minimax(int player, int board[8][8], int depth, int suggest) {
-	printf("yo\n");
+	//printf("yo\n");
 	int opposite = 0;
 	if (player == 1) {
 		opposite = 2;
