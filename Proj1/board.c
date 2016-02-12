@@ -21,35 +21,32 @@ void slowScore();
 void checkMove();
 void retZero();
 void putPiece(int x, int y);
+void inst();
+int letToNum(char let);
 
 int main(int argc, char const *argv[])
 {
 	newgame();
-	printf("How Many Milliseconds Per Move Would You Like Your Opponent To Take?\n");
+	inst();
+	printf("\n\nHow Many Milliseconds Per Move Would You Like Your Opponent To Take?\n");
 	scanf("%d",inp);
 	int mils = *inp;
-	//printf("hello %d\n", hello);
+	
 	while(game==0) {
 
-		//printf("%d\n", hey);
 		checkMove();
-		//printf("%d",moves);
 		if(moves==0){
 			cantMove[0]=1;
 			legal=1;
-			//goto nextTurn;
 		}
 		screen();
 		scanf("%s",pos);
-		//system("cls");
 		row=pos[0]-'1';
-		col=pos[2]-'1';
+		col=letToNum(pos[2])-1;
 		islegal(row,col);
 		if(legal==1){
 			retZero();
 			putPiece(row,col);
-			//screen();
-			//board[row][col]=player;
 		}
 	nextTurn:
 		retZero();
@@ -62,26 +59,19 @@ int main(int argc, char const *argv[])
 				goto nextTurn1;
 			}
 			clock_t begin = clock(), runningTime;
-			int ai = minimax(player, board, 6, turn, begin, runningTime)[0];
-			yy = ai % 10;
-		 	yy = yy - 1;
-		 	xx = ai / 10;
-		 	xx = xx - 1;
-		 	//board[xx][yy] = player;
-	 		printf("\n");
-			printf("Opponent Moved To %d,%d\n", (xx + 1), (yy + 1));
-		//minimax3(player, board, turn);
-			//printf("1\n");
-			putPiece(xx, yy);
-			//screen();
-			//printf("2\n");
-			retZero();
-			//printf("here");
-			//printf("3\n");
-			player = 1;
-			//printf("4\n");
+			int ai = minimax(player, board, 6, turn, begin, runningTime, mils)[0];
+			if (ai != 0) {
+				yy = ai % 10;
+			 	yy = yy - 1;
+			 	xx = ai / 10;
+			 	xx = xx - 1;
+		 		printf("\n");
+				printf("Opponent Moved To %d,%d\n", (xx + 1), (yy + 1));
+				putPiece(xx, yy);
+				retZero();
+				player = 1;
+			}
 			legal=0;
-			//printf("5\n");
 		}
 	nextTurn1:
 		if(cantMove[0]==1 && cantMove[1]==1){
@@ -101,16 +91,21 @@ int main(int argc, char const *argv[])
 }
 
 void screen(){
-	printf("\n");
+	int r=1;
+	printf("\n\n");
+	printf("      a b c d e f g h\n\n");
 	for(int i=0; i < 8; ++i){
+		printf(" %d    ",r);
 		for (int j=0; j < 8; ++j)
 		{
 			printf("%d ",board[i][j]);
 		}
+		++r;
 		printf("\n");
 	}
+	printf("\n\n");
 	slowScore();
-	printf("Enter Position (x,y): ");
+	printf("\nEnter Position (x,y): ");
 }
 
 
@@ -134,10 +129,7 @@ void islegal(int x, int y) {
 		printf("\n***Invalid Move***\n");
 		legal=0;
 	} else if(board[x][y]==turn){
-		legal=1;
-	
-		//board[x][y]=player;
-		
+		legal=1;		
 	}
 }
 
@@ -153,7 +145,7 @@ void slowScore() {
 			}
 		}
 	}
-	//printf("%d, %d\n", score1, score2);
+	printf("Score Player: %d   Score AI: %d\n", score1, score2);
 }
 
 void retZero(){
@@ -164,7 +156,6 @@ void retZero(){
 			if(board[i][j]==turn){
 				board[i][j]=0;
 			}
-		//
 		}
 	}
 	++turns;
@@ -512,15 +503,37 @@ void putPiece(int x, int y){
 			
 		}
 	}
-	
-	
-
-}
+	}
 }
 
+void inst(){
+	printf(" Instructions: \n - 0 is an empty space on the board \n - 1 is the player's piece");
+	printf("\n - 2 is the AI's piece \n - 5 is a possible move");
+	printf("\n - Just write the possition you want to play ie (5,a)");
+}
 
-
-
+int letToNum(char let){
+	if(let=='a'){
+		return 1;
+	}else if(let=='b'){
+		return 2;
+	}else if(let=='c'){
+		return 3;
+	}else if(let=='d'){
+		return 4;
+	}else if(let=='e'){
+		return 5;
+	}else if(let=='f'){
+		return 6;
+	}else if(let=='g'){
+		return 7;
+	}else if(let=='h'){
+		return 8;
+	}else{
+		return 100;
+	}
+	
+}
 
 
 
