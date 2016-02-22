@@ -57,96 +57,6 @@ int main(){
 	return 0;
 }
 
-void noisySensor(int x, int y) {
-	int probability = (rand() % 100);
-	if(probability >= 0 && probability < 10) {
-		printf("Noisy Sensor Approximates (%d, %d)\n", x, y);
-	}
-	if(probability >= 10 && probability < 15) {
-		if(x - 1 >= 0 && y - 1 >= 0) {
-			printf("Noisy Sensor Approximates (%d, %d)\n", x - 1, y - 1);
-			return;
-		} else {
-			printf("Noisy Sensor Approximates 'nothing'\n");
-			return;
-		}
-	}
-	if(probability >= 15 && probability < 20) {
-		if(x - 1 >= 0) {
-			printf("Noisy Sensor Approximates (%d, %d)\n", x - 1, y);
-			return;
-		} else {
-			printf("Noisy Sensor Approximates 'nothing'\n");
-			return;
-		}
-	}
-	if(probability >= 20 && probability < 25) {
-		if(x - 1 >= 0 && y + 1 < m) {
-			printf("Noisy Sensor Approximates (%d, %d)\n", x - 1, y + 1);
-			return;
-		} else {
-			printf("Noisy Sensor Approximates 'nothing'\n");
-			return;
-		}
-	}
-	if(probability >= 25 && probability < 30) {
-		if(y - 1 >= 0) {
-			printf("Noisy Sensor Approximates (%d, %d)\n", x, y - 1);
-			return;
-		} else {
-			printf("Noisy Sensor Approximates 'nothing'\n");
-			return;
-		}
-	}
-	if(probability >= 30 && probability < 35) {
-		if(y + 1 < m) {
-			printf("Noisy Sensor Approximates (%d, %d)\n", x, y + 1);
-			return;
-		} else {
-			printf("Noisy Sensor Approximates 'nothing'\n");
-			return;
-		}
-	}
-	if(probability >= 35 && probability < 40) {
-		if(x + 1 < n && y - 1 >= 0) {
-			printf("Noisy Sensor Approximates (%d, %d)\n", x + 1, y - 1);
-			return;
-		} else {
-			printf("Noisy Sensor Approximates 'nothing'\n");
-			return;
-		}
-	}
-	if(probability >= 40 && probability < 45) {
-		if(x + 1 < n) {
-			printf("Noisy Sensor Approximates (%d, %d)\n", x + 1, y);
-			return;
-		} else {
-			printf("Noisy Sensor Approximates 'nothing'\n");
-			return;
-		}
-	}
-	if(probability >= 45 && probability < 50) {
-		if(x + 1 >= n && y + 1 >= m) {
-			printf("Noisy Sensor Approximates (%d, %d)\n", x + 1, y + 1);
-			return;
-		} else {
-			printf("Noisy Sensor Approximates 'nothing'\n");
-			return;
-		}
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
 void move(int x, int y) {
 	if(firstMove == 0) {
 		direction = (rand() % 4);
@@ -335,3 +245,247 @@ void sense(){
 }
 
 
+
+
+
+
+void noisySensor(int x, int y) {
+	int probability = (rand() % 100);
+
+	//true location L with probability 0.1----------------------------------------------
+	if(probability >= 0 && probability < 10) {
+		printf("Noisy Sensor Approximates (%d, %d)\n", x, y);
+	}
+
+	//8 surrounding fields L_s with probability 0.05 each-------------------------------
+	if(probability >= 10 && probability < 15) {
+		if(x - 1 >= 0 && y - 1 >= 0) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x - 1, y - 1);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 15 && probability < 20) {
+		if(x - 1 >= 0) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x - 1, y);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 20 && probability < 25) {
+		if(x - 1 >= 0 && y + 1 < m) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x - 1, y + 1);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 25 && probability < 30) {
+		if(y - 1 >= 0) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x, y - 1);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 30 && probability < 35) {
+		if(y + 1 < m) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x, y + 1);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 35 && probability < 40) {
+		if(x + 1 < n && y - 1 >= 0) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x + 1, y - 1);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 40 && probability < 45) {
+		if(x + 1 < n) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x + 1, y);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 45 && probability < 50) {
+		if(x + 1 >= n && y + 1 >= m) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x + 1, y + 1);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+
+
+
+	//16 surrounding fields L_s2 with probability 0.025 each----------------------------------------------
+	if(probability >= 50 && probability < 53) {
+		if(x - 2 >= 0 && y - 2 >= 0) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x - 2, y - 2);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 53 && probability < 56) {
+		if(x - 2 >= 0 && y -1 >= 0) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x - 2, y - 1);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 56 && probability < 59) {
+		if(x - 2 >= 0) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x - 2, y);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 59 && probability < 62) {
+		if(x - 2 >= 0 && y + 1 < m) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x - 2, y + 1);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 62 && probability < 65) {
+		if(x - 2 >= 0 && y + 2 < m) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x - 2, y + 2);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	//-----------------------------------------
+	if(probability >= 65 && probability < 68) {
+		if(x - 1 >= 0 && y - 2 >= 0) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x - 1, y - 2);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 68 && probability < 71) {
+		if(x - 1 >= 0 && y + 2 < m) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x - 1, y + 2);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 71 && probability < 74) {
+		if(y - 2 >= 0) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x, y - 2);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 95 && probability < 98) {
+		if(y + 2 < m) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x, y + 2);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 74 && probability < 77) {
+		if(x + 1 < n && y - 2 >= 0) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x + 1, y - 2);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 77 && probability < 80) {
+		if(x + 1 >= n && y + 2 < m) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x + 1, y + 2);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	//-----------------------------------------
+	if(probability >= 80 && probability < 83) {
+		if(x + 2 < n && y - 2 >= 0) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x + 2, y - 2);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 83 && probability < 86) {
+		if(x + 2 < n && y - 1 >= 0) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x, y - 1);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 86 && probability < 89) {
+		if(x + 2 < n) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x + 2, y);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 89 && probability < 92) {
+		if(x + 2 < n && y + 1 < m) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x + 2, y + 1);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+	if(probability >= 92 && probability < 95) {
+		if(x + 2 < n && y + 2 < m) {
+			printf("Noisy Sensor Approximates (%d, %d)\n", x + 2, y + 2);
+			return;
+		} else {
+			printf("Noisy Sensor Approximates 'nothing'\n");
+			return;
+		}
+	}
+
+
+
+	//"nothing" with probability 0.1----------------------------------------------
+	if(probability >= 98 && probability < 100) {
+		printf("Noisy Sensor Approximates 'nothing'\n");
+	}
+
+}
