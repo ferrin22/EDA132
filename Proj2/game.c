@@ -32,15 +32,19 @@ void tracking(int x, int y);
 int main(){
 	reset();
 	randomBoard();
-	
+
+	printf("\n-----\n");
+	printf("The room is %d by %d (indexed from 0)\n", n, m);
+	printf("Type \"c\" for the robot to make its next move\n");
+	printf("-----\n");
 
 	int x = (rand() % n);
 	int y = (rand() % m);
 	xRob=x;yRob=y;
 	
 	while (stop == 0) {
-		screen();
-		printf("Robot is at %d, %d\n", xRob, yRob);
+		//screen();
+		printf("\nRobot is at %d, %d", xRob, yRob);
 		printf("\n");
 		noisySensor(xRob, yRob);
 		tracking(xsen, ysen);
@@ -182,7 +186,7 @@ void seventy(int x, int y, int direction) {
  * Called by move();
 */
 int thirty(int x, int y, int direction) {
-	printf("Changed Direction\n");
+	printf("***Robot Changed Direction***\n");
 	int newDirection = direction;
 	while(direction == newDirection) {
 		newDirection = (rand() % 4);
