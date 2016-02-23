@@ -8,6 +8,7 @@ int n=5,m=8,xRob,yRob,wall;
 int board[5][8];
 int posRobot[2];
 float probaBoard[5][8],error;
+float newBoard[5][8];
 int sensor[4]; // N S W E
 char inp[1];
 int stop = 0;
@@ -17,6 +18,7 @@ int xsen;
 int ysen;
 int xTrack;
 int yTrack;
+int firstT = 1;
 
 
 void randomBoard();
@@ -30,6 +32,7 @@ int walls(int x, int y, int direction);
 void noisySensor(int x, int y);
 void tracking(int x, int y, float board[n][m]);
 void show();
+void merger(float old[n][m], float newB[n][m]);
 
 
 int main(){
@@ -50,9 +53,15 @@ int main(){
 		printf("\nRobot is at %d, %d", xRob, yRob);
 		printf("\n");
 		noisySensor(xRob, yRob);
-		tracking(xsen, ysen, probaBoard);
+		if(firstT == 0) {
+			tracking(xsen, ysen, newBoard);
+			merger(probaBoard, newBoard);
+		} else {
+			tracking(xsen, ysen, probaBoard);
+			firstT = 0;
+		}
 		printf("Tracker Guesses %d, %d\n", xTrack, yTrack);
-		show();
+		//show();
 		
 		scanf("%s", inp);
 		char yup = inp[0];
@@ -72,6 +81,32 @@ int main(){
 }
 
 
+void merger(float old[n][m], float newB[n][m]) {
+	if(xsen != -1) {
+		for(int i = 0; i < n; ++i) {
+			for(int j = 0; j < m; ++j) {
+				old[i][j] = newB[i][j] - old[i][j];
+				newB[i][j] = 0;
+			}
+		}
+		int ibest = 0;
+		int jbest = 0;
+		float tbest = 0;
+		for(int i = 0; i < n; ++i) {
+			for(int j = 0; j < m; ++j) {
+				if(old[i][j] >= tbest) {
+					tbest = old[i][j];
+					ibest = i;
+					jbest = j;
+				}
+			}
+		}
+		xTrack = ibest;
+		yTrack = jbest;
+	}
+}
+
+
 void show() {
 	for(int i = 0; i < n; ++i){
 		for(int j = 0; j < m; ++j){
@@ -81,80 +116,82 @@ void show() {
 	}
 }
 
+
+
 void tracking(int x, int y, float board[n][m]) {
 	if(x != -1 && y != -1) {
-		probaBoard[x][y] = 0.1;
+		board[x][y] = 0.1;
 
 		if(x - 1 >= 0 && y - 1 >= 0) {
-			probaBoard[x - 1][y - 1] = 0.05;
+			board[x - 1][y - 1] = 0.05;
 		}
 		if(x - 1 >= 0) {
-		probaBoard[x - 1][y] = 0.05;
+		board[x - 1][y] = 0.05;
 		}
 		if(x - 1 >= 0 && y + 1 < m) {
-		probaBoard[x - 1][y + 1] = 0.05;
+		board[x - 1][y + 1] = 0.05;
 		}
 		if(y - 1 >= 0) {
-		probaBoard[x][y - 1] = 0.05;
+		board[x][y - 1] = 0.05;
 		}
 		if(y + 1 < m) {
-		probaBoard[x][y + 1] = 0.05;
+		board[x][y + 1] = 0.05;
 		}
 		if(x + 1 < n && y - 1 >= 0) {
-		probaBoard[x + 1][y - 1] = 0.05;
+		board[x + 1][y - 1] = 0.05;
 		}
 		if(x + 1 < n) {
-		probaBoard[x + 1][y] = 0.05;
+		board[x + 1][y] = 0.05;
 		}
 		if(x + 1 < n && y + 1 < m) {
-		probaBoard[x + 1][y + 1] = 0.05;
+		board[x + 1][y + 1] = 0.05;
 		}
 
 		if(x - 2 >= 0 && y - 2 >= 0) {
-		probaBoard[x - 2][y - 2] = 0.025;
+		board[x - 2][y - 2] = 0.025;
 		}
 		if(x - 2 >= 0 && y - 1 >= 0) {
-		probaBoard[x - 2][y - 1] = 0.025;
+		board[x - 2][y - 1] = 0.025;
 		}
 		if(x - 2 >= 0) {
-		probaBoard[x - 2][y] = 0.025;
+		board[x - 2][y] = 0.025;
 		}
 		if(x - 2 >= 0 && y + 1 < m) {
-		probaBoard[x - 2][y + 1] = 0.025;
+		board[x - 2][y + 1] = 0.025;
 		}
 		if(x - 2 >= 0 && y + 2 < m) {
-		probaBoard[x - 2][y + 2] = 0.025;
+		board[x - 2][y + 2] = 0.025;
 		}
 		if(x - 1 >= 0 && y - 2 >= 0) {
-		probaBoard[x - 1][y - 2] = 0.025;
+		board[x - 1][y - 2] = 0.025;
 		}
 		if(x - 2 >= 0 && y + 2 < m) {
-		probaBoard[x - 1][y + 2] = 0.025;
+		board[x - 1][y + 2] = 0.025;
 		}
 		if(y - 2 >= 0) {
-		probaBoard[x][y - 2] = 0.025;
+		board[x][y - 2] = 0.025;
 		}
-		probaBoard[x][y + 2] = 0.025;
+		board[x][y + 2] = 0.025;
 		if(x + 1 < n && y - 2 >= 0) {
-		probaBoard[x + 1][y - 2] = 0.025;
+		board[x + 1][y - 2] = 0.025;
 		}
 		if(x + 1 < n && y + 2 < m) {
-		probaBoard[x + 1][y + 2] = 0.025;
+		board[x + 1][y + 2] = 0.025;
 		}
 		if(x + 2 < n && y - 2 >= 0) {
-		probaBoard[x + 2][y - 2] = 0.025;
+		board[x + 2][y - 2] = 0.025;
 		}
 		if(x + 2 < n && y - 1 >= 0) {
-		probaBoard[x + 2][y - 1] = 0.025;
+		board[x + 2][y - 1] = 0.025;
 		}
 		if(x + 2 < n) { 
-		probaBoard[x + 2][y] = 0.025;
+		board[x + 2][y] = 0.025;
 		}
 		if(x + 2 < n && y + 1 < m) {
-		probaBoard[x + 2][y + 1] = 0.025;
+		board[x + 2][y + 1] = 0.025;
 		}
 		if(x + 2 < n && y + 2 < m) {
-		probaBoard[x + 2][y + 2] = 0.025;
+		board[x + 2][y + 2] = 0.025;
 		}
 	}
 	int xbest = 0;
@@ -162,8 +199,8 @@ void tracking(int x, int y, float board[n][m]) {
 	float best = 0;
 	for(int i = 0; i < n; ++i) {
 		for(int j = 0; j < m; ++j) {
-			if(probaBoard[i][j] > best) {
-				best = probaBoard[i][j];
+			if(board[i][j] > best) {
+				best = board[i][j];
 					xbest = i;
 					ybest = j;
 			}
@@ -173,11 +210,11 @@ void tracking(int x, int y, float board[n][m]) {
 		xTrack = xbest;
 		yTrack = ybest;
 	}
-	for(int i = 0; i < n; ++i) {
-		for(int j = 0; j < m; ++j) {
-			probaBoard[i][j] = 0;
-		}
-	}
+	//for(int i = 0; i < n; ++i) {
+	//	for(int j = 0; j < m; ++j) {
+	//		board[i][j] = 0;
+	//	}
+	//}
 }
 
 
