@@ -15,6 +15,8 @@ int firstMove = 0;
 int direction = 5;
 int xsen;
 int ysen;
+int xTrack;
+int yTrack;
 
 
 void randomBoard();
@@ -26,7 +28,7 @@ void seventy(int x, int y, int direction);
 int thirty(int x, int y, int direction);
 int walls(int x, int y, int direction);
 void noisySensor(int x, int y);
-void tracking(int x, int y);
+void tracking(int x, int y, float board[n][m]);
 void show();
 
 
@@ -48,7 +50,8 @@ int main(){
 		printf("\nRobot is at %d, %d", xRob, yRob);
 		printf("\n");
 		noisySensor(xRob, yRob);
-		tracking(xsen, ysen);
+		tracking(xsen, ysen, probaBoard);
+		printf("Tracker Guesses %d, %d\n", xTrack, yTrack);
 		show();
 		
 		scanf("%s", inp);
@@ -78,7 +81,7 @@ void show() {
 	}
 }
 
-void tracking(int x, int y) {
+void tracking(int x, int y, float board[n][m]) {
 	if(x != -1 && y != -1) {
 		probaBoard[x][y] = 0.1;
 
@@ -152,6 +155,25 @@ void tracking(int x, int y) {
 		}
 		if(x + 2 < n && y + 2 < m) {
 		probaBoard[x + 2][y + 2] = 0.025;
+		}
+	}
+	int xbest = 0;
+	int ybest = 0;
+	float best = 0;
+	for(int i = 0; i < n; ++i) {
+		for(int j = 0; j < m; ++j) {
+			if(probaBoard[i][j] > best) {
+				best = probaBoard[i][j];
+				xbest = i;
+				ybest = j;
+			}
+		}
+	}
+	xTrack = xbest;
+	yTrack = ybest;
+	for(int i = 0; i < n; ++i) {
+		for(int j = 0; j < m; ++j) {
+			probaBoard[i][j] = 0;
 		}
 	}
 }
