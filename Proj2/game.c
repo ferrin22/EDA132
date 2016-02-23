@@ -145,10 +145,10 @@ int walls(int x, int y, int direction) {
 
 
 /*
-	Logic for the next robot move assuming
-	the robot is continuing in the same
-	direction as it does 70% of the time.
-	Called by move();
+ * Logic for the next robot move assuming
+ * the robot is continuing in the same
+ * direction as it does 70% of the time.
+ * Called by move();
 */
 void seventy(int x, int y, int direction) {
 	//printf(".7\n");
@@ -174,6 +174,13 @@ void seventy(int x, int y, int direction) {
 	}
 }
 
+
+/*
+ * Logic for the next robot move assuming
+ * the robot is changing  direction as it 
+ * does 70% of the time.
+ * Called by move();
+*/
 int thirty(int x, int y, int direction) {
 	printf("Changed Direction\n");
 	int newDirection = direction;
@@ -277,7 +284,12 @@ void sense(){
 
 
 
-
+/*
+ * Contains all logic for the sensor.  
+ * Takes the robot's current location as
+ * input and outputs the noisy sensor 
+ * approximation.
+*/
 void noisySensor(int x, int y) {
 	int probability = (rand() % 100);
 
@@ -394,8 +406,6 @@ void noisySensor(int x, int y) {
 			return;
 		}
 	}
-
-
 
 	//16 surrounding fields L_s2 with probability 0.025 each----------------------------------------------
 	if(probability >= 50 && probability < 53) {
@@ -608,8 +618,6 @@ void noisySensor(int x, int y) {
 			return;
 		}
 	}
-
-
 
 	//"nothing" with probability 0.1----------------------------------------------
 	if(probability >= 98 && probability < 100) {
