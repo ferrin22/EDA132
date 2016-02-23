@@ -27,6 +27,7 @@ int thirty(int x, int y, int direction);
 int walls(int x, int y, int direction);
 void noisySensor(int x, int y);
 void tracking(int x, int y);
+void show();
 
 
 int main(){
@@ -48,6 +49,7 @@ int main(){
 		printf("\n");
 		noisySensor(xRob, yRob);
 		tracking(xsen, ysen);
+		show();
 		
 		scanf("%s", inp);
 		char yup = inp[0];
@@ -56,19 +58,29 @@ int main(){
 			//noisySensor(x, y);
 		}
 	}
-	if(board[xRob][yRob]==0){
-		wall=1;
-	}else{
-		wall=0;
-	}
-	sense();
+	// if(board[xRob][yRob]==0){
+	// 	wall=1;
+	// }else{
+	// 	wall=0;
+	// }
+	// sense();
 	
 	return 0;
 }
 
 
+void show() {
+	for(int i = 0; i < n; ++i){
+		for(int j = 0; j < m; ++j){
+	 		printf("%f", probaBoard[i][j]);
+	 	}
+	 	printf("\n");
+	}
+}
+
 void tracking(int x, int y) {
-	probaBoard[x][y] = (probaBoard[x][y] + 0.1) / 2;
+	probaBoard[x][y] = 0.1;
+
 }
 
 
@@ -227,23 +239,23 @@ void randomBoard(){
 	}
 }
 
-void screen(){
-	printf("\n");
-	for(int i=0; i<n; ++i){
-		for(int j=0; j<m; ++j){
-			printf("%d ",board[i][j]);
-		}
-		printf("\n");
-	}
-	printf("\n\n");
-	for(int i=0; i<n; ++i){
-		for(int j=0; j<m; ++j){
-			printf("%1.4f ",probaBoard[i][j]);
-		}
-		printf("\n");
-	}
+// void screen(){
+// 	printf("\n");
+// 	for(int i=0; i<n; ++i){
+// 		for(int j=0; j<m; ++j){
+// 			printf("%d ",board[i][j]);
+// 		}
+// 		printf("\n");
+// 	}
+// 	printf("\n\n");
+// 	for(int i=0; i<n; ++i){
+// 		for(int j=0; j<m; ++j){
+// 			printf("%1.4f ",probaBoard[i][j]);
+// 		}
+// 		printf("\n");
+// 	}
 	
-}
+// }
 
 void reset(){
 	float p;
@@ -256,33 +268,33 @@ void reset(){
 	
 	for(int i=0; i<n; ++i){
 		for(int j=0; j<m; ++j){
-			probaBoard[i][j]=p;
+			probaBoard[i][j]= 0.0;
 			board[i][j]=1;
 		}
 	}
 }
 
-void sense(){
+// void sense(){
 	
-	//check N
-	if((yRob-1)>=0 && board[yRob-1][xRob]==wall){
-		sensor[0]=1;				
-	}
-	//Check S
-	if((yRob+1)<n && board[yRob+1][xRob]==wall){
-		sensor[1]=1;				
-	}
-	//check W
-	if((xRob-1)>=0 && board[yRob][xRob-1]==wall){
-		sensor[2]=1;				
-	}
-	//Check E
-	if((xRob+1)<m && board[yRob][xRob+1]==wall){
-		sensor[3]=1;				
-	}	
+// 	//check N
+// 	if((yRob-1)>=0 && board[yRob-1][xRob]==wall){
+// 		sensor[0]=1;				
+// 	}
+// 	//Check S
+// 	if((yRob+1)<n && board[yRob+1][xRob]==wall){
+// 		sensor[1]=1;				
+// 	}
+// 	//check W
+// 	if((xRob-1)>=0 && board[yRob][xRob-1]==wall){
+// 		sensor[2]=1;				
+// 	}
+// 	//Check E
+// 	if((xRob+1)<m && board[yRob][xRob+1]==wall){
+// 		sensor[3]=1;				
+// 	}	
 	
-	printf("N:%d S:%d W:%d E:%d ",sensor[0],sensor[1],sensor[2],sensor[3]);
-}
+// 	printf("N:%d S:%d W:%d E:%d ",sensor[0],sensor[1],sensor[2],sensor[3]);
+// }
 
 
 
@@ -572,8 +584,8 @@ void noisySensor(int x, int y) {
 	}
 	if(probability >= 83 && probability < 86) {
 		if(x + 2 < n && y - 1 >= 0) {
-			printf("Noisy Sensor Approximates (%d, %d)\n", x, y - 1);
-			xsen = x;
+			printf("Noisy Sensor Approximates (%d, %d)\n", x + 2, y - 1);
+			xsen = x + 2;
 			ysen = y - 1;
 			return;
 		} else {
