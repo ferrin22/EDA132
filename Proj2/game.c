@@ -72,15 +72,88 @@ int main(){
 void show() {
 	for(int i = 0; i < n; ++i){
 		for(int j = 0; j < m; ++j){
-	 		printf("%f", probaBoard[i][j]);
+	 		printf("  %1.3f", probaBoard[i][j]);
 	 	}
 	 	printf("\n");
 	}
 }
 
 void tracking(int x, int y) {
-	probaBoard[x][y] = 0.1;
+	if(x != -1 && y != -1) {
+		probaBoard[x][y] = 0.1;
 
+		if(x - 1 >= 0 && y - 1 >= 0) {
+			probaBoard[x - 1][y - 1] = 0.05;
+		}
+		if(x - 1 >= 0) {
+		probaBoard[x - 1][y] = 0.05;
+		}
+		if(x - 1 >= 0 && y + 1 < m) {
+		probaBoard[x - 1][y + 1] = 0.05;
+		}
+		if(y - 1 >= 0) {
+		probaBoard[x][y - 1] = 0.05;
+		}
+		if(y + 1 < m) {
+		probaBoard[x][y + 1] = 0.05;
+		}
+		if(x + 1 < n && y - 1 >= 0) {
+		probaBoard[x + 1][y - 1] = 0.05;
+		}
+		if(x + 1 < n) {
+		probaBoard[x + 1][y] = 0.05;
+		}
+		if(x + 1 < n && y + 1 < m) {
+		probaBoard[x + 1][y + 1] = 0.05;
+		}
+
+		if(x - 2 >= 0 && y - 2 >= 0) {
+		probaBoard[x - 2][y - 2] = 0.025;
+		}
+		if(x - 2 >= 0 && y - 1 >= 0) {
+		probaBoard[x - 2][y - 1] = 0.025;
+		}
+		if(x - 2 >= 0) {
+		probaBoard[x - 2][y] = 0.025;
+		}
+		if(x - 2 >= 0 && y + 1 < m) {
+		probaBoard[x - 2][y + 1] = 0.025;
+		}
+		if(x - 2 >= 0 && y + 2 < m) {
+		probaBoard[x - 2][y + 2] = 0.025;
+		}
+		if(x - 1 >= 0 && y - 2 >= 0) {
+		probaBoard[x - 1][y - 2] = 0.025;
+		}
+		if(x - 2 >= 0 && y + 2 < m) {
+		probaBoard[x - 1][y + 2] = 0.025;
+		}
+		if(y - 2 >= 0) {
+		probaBoard[x][y - 2] = 0.025;
+		}
+		probaBoard[x][y + 2] = 0.025;
+		if(x + 1 < n && y - 2 >= 0) {
+		probaBoard[x + 1][y - 2] = 0.025;
+		}
+		if(x + 1 < n && y + 2 < m) {
+		probaBoard[x + 1][y + 2] = 0.025;
+		}
+		if(x + 2 < n && y - 2 >= 0) {
+		probaBoard[x + 2][y - 2] = 0.025;
+		}
+		if(x + 2 < n && y - 1 >= 0) {
+		probaBoard[x + 2][y - 1] = 0.025;
+		}
+		if(x + 2 < n) { 
+		probaBoard[x + 2][y] = 0.025;
+		}
+		if(x + 2 < n && y + 1 < m) {
+		probaBoard[x + 2][y + 1] = 0.025;
+		}
+		if(x + 2 < n && y + 2 < m) {
+		probaBoard[x + 2][y + 2] = 0.025;
+		}
+	}
 }
 
 
@@ -556,7 +629,7 @@ void noisySensor(int x, int y) {
 		}
 	}
 	if(probability >= 77 && probability < 80) {
-		if(x + 1 >= n && y + 2 < m) {
+		if(x + 1 < n && y + 2 < m) {
 			printf("Noisy Sensor Approximates (%d, %d)\n", x + 1, y + 2);
 			xsen = x + 1;
 			ysen = y + 2;
