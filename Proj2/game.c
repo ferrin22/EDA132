@@ -164,13 +164,15 @@ void tracking(int x, int y, float board[n][m]) {
 		for(int j = 0; j < m; ++j) {
 			if(probaBoard[i][j] > best) {
 				best = probaBoard[i][j];
-				xbest = i;
-				ybest = j;
+					xbest = i;
+					ybest = j;
 			}
 		}
 	}
-	xTrack = xbest;
-	yTrack = ybest;
+	if(best != 0) {
+		xTrack = xbest;
+		yTrack = ybest;
+	}
 	for(int i = 0; i < n; ++i) {
 		for(int j = 0; j < m; ++j) {
 			probaBoard[i][j] = 0;
